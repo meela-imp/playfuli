@@ -1,6 +1,17 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
-export function middleware(_request: NextRequest) {
+export function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+  const hasSession = request.cookies.getAll().some(c => c.name.startsWith('sb-') && c.name.endsWith('-auth-token'));
+
+  if (!hasSession && pathname.startsWith('/dashboard')) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  if (hasSession && (pathname === '/login' || pathname === '/signup')) {
+    return NextResponse.redirect(new URL('/dashboard', request.url));
+  }
+
   return NextResponse.next();
 }
 
