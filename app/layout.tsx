@@ -1,5 +1,3 @@
-export const runtime = 'nodejs';
-
 import type { Metadata } from "next";
 import { Fredoka, Nunito } from "next/font/google";
 import "./globals.css";
