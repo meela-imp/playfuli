@@ -1,7 +1,6 @@
 'use client';
 
 import { useRef, useCallback } from 'react';
-import Image from 'next/image';
 
 export default function Nav() {
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -34,7 +33,8 @@ export default function Nav() {
   return (
     <nav aria-label="Main navigation">
       <a className="logo" href="/">
-        <Image src="/playfuli-logo-blue.svg" alt="Playfuli" width={110} height={36} priority />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/playfuli-logo-white.svg" alt="Playfuli" style={{ height: 36, width: 'auto', display: 'block' }} />
       </a>
 
       <div className="nav-center">

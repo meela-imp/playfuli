@@ -1,4 +1,5 @@
-import Image from 'next/image';
+'use client';
+
 
 export default function Footer() {
   return (
@@ -6,7 +7,8 @@ export default function Footer() {
       <div className="footer-grid">
         <div className="footer-col-brand">
           <div className="footer-logo">
-            <Image src="/playfuli-logo-white.svg" alt="Playfuli" width={110} height={36} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/playfuli-logo-white.svg" alt="Playfuli" style={{ height: 36, width: 'auto', display: 'block' }} />
           </div>
           <p className="footer-tagline">Where great gifts come from.</p>
           <form className="footer-email-form" onSubmit={(e) => e.preventDefault()}>
