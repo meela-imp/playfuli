@@ -22,17 +22,17 @@ export async function middleware(request: NextRequest) {
       }
     );
 
-    const { data: { user } } = await supabase.auth.getUser();
+    // getSession reads from cookie — no network call, safe on edge
+    const { data: { session } } = await supabase.auth.getSession();
 
-    if (!user && request.nextUrl.pathname.startsWith('/dashboard')) {
+    if (!session && request.nextUrl.pathname.startsWith('/dashboard')) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
 
-    if (user && (request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/signup')) {
+    if (session && (request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/signup')) {
       return NextResponse.redirect(new URL('/dashboard', request.url));
     }
   } catch {
-    // If Supabase is unreachable, still serve the page — just don't protect routes
     if (request.nextUrl.pathname.startsWith('/dashboard')) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
