@@ -22,20 +22,20 @@ export const metadata: Metadata = {
     "Create a play profile for your kid and share it with party guests — so every gift is something they'll actually love. No registry. No guessing.",
   openGraph: {
     type: "website",
-    url: "https://playfuli.com/",
+    url: "https://playfuli.co/",
     title: "Playfuli — Where great gifts come from",
     description:
       "Create a play profile for your kid and share it with party guests — so every gift is something they'll actually love. No registry. No guessing.",
-    images: [{ url: "https://playfuli.com/og-image.png" }],
+    images: [{ url: "https://playfuli.co/og-image.png" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Playfuli — Where great gifts come from",
     description:
       "Create a play profile for your kid and share it with party guests — so every gift is something they'll actually love.",
-    images: ["https://playfuli.com/og-image.png"],
+    images: ["https://playfuli.co/og-image.png"],
   },
-  alternates: { canonical: "https://playfuli.com/" },
+  alternates: { canonical: "https://playfuli.co/" },
 };
 
 export default function RootLayout({
