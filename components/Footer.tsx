@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="footer-col-brand">
           <div className="footer-logo">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/playfuli-logo-white.svg" alt="Playfuli" style={{ height: 36, width: 'auto', display: 'block' }} />
+            <img src="/playfuli-logo-white.svg" alt="Playfuli" style={{ height: 30, width: 'auto', display: 'block' }} />
           </div>
           <p className="footer-tagline">Where great gifts come from.</p>
           <form className="footer-email-form" onSubmit={(e) => e.preventDefault()}>

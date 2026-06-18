@@ -34,7 +34,7 @@ export default function Nav() {
     <nav aria-label="Main navigation">
       <a className="logo" href="/">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/playfuli-logo-white.svg" alt="Playfuli" style={{ height: 36, width: 'auto', display: 'block' }} />
+        <img src="/playfuli-logo-white.svg" alt="Playfuli" style={{ height: 28, width: 'auto', display: 'block' }} />
       </a>
 
       <div className="nav-center">
