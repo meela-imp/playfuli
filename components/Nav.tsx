@@ -34,7 +34,7 @@ export default function Nav() {
   return (
     <nav aria-label="Main navigation">
       <a className="logo" href="/">
-        <Image src="/playfuli-logo.png" alt="Playfuli" width={110} height={36} priority />
+        <Image src="/playfuli-logo-blue.png" alt="Playfuli" width={110} height={36} priority />
       </a>
 
       <div className="nav-center">

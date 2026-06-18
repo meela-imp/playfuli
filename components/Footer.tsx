@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="footer-grid">
         <div className="footer-col-brand">
           <div className="footer-logo">
-            <Image src="/playfuli-logo.png" alt="Playfuli" width={110} height={36} style={{ filter: 'brightness(0) invert(1)' }} />
+            <Image src="/playfuli-logo-white.png" alt="Playfuli" width={110} height={36} />
           </div>
           <p className="footer-tagline">Where great gifts come from.</p>
           <form className="footer-email-form" onSubmit={(e) => e.preventDefault()}>
