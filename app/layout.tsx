@@ -6,12 +6,14 @@ const fredoka = Fredoka({
   weight: ["400", "500", "600"],
   subsets: ["latin"],
   display: "swap",
+  variable: "--font-fredoka",
 });
 
 const nunito = Nunito({
   weight: ["400", "500", "700", "800"],
   subsets: ["latin"],
   display: "swap",
+  variable: "--font-nunito",
 });
 
 export const metadata: Metadata = {
