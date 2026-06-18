@@ -281,15 +281,39 @@
   window.addEventListener('load', init);
   window.addEventListener('resize', () => setTimeout(init, 100));
 
-  // ── Signup handler (placeholder) ──
-  function handleSignup(e) {
+  // ── Signup handler ──
+  async function handleSignup(e) {
     e.preventDefault();
     const input = e.target.querySelector('input');
     const btn = e.target.querySelector('button');
-    btn.textContent = "You're in! 🎉";
-    btn.style.background = '#D2E0CA';
-    input.disabled = true;
+    const email = input.value.trim();
+
+    btn.textContent = 'Adding you…';
     btn.disabled = true;
+    input.disabled = true;
+
+    try {
+      const res = await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=RBxLMG', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'revision': '2023-02-22' },
+        body: JSON.stringify({
+          data: {
+            type: 'subscription',
+            attributes: { list_id: 'TeQ9yk', email }
+          }
+        })
+      });
+      if (res.ok || res.status === 202) {
+        btn.textContent = "You're in! 🎉";
+        btn.style.background = '#D2E0CA';
+      } else {
+        throw new Error();
+      }
+    } catch {
+      btn.textContent = 'Try again';
+      btn.disabled = false;
+      input.disabled = false;
+    }
   }
 </script>
 

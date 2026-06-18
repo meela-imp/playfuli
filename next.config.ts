@@ -6,9 +6,12 @@ const nextConfig: NextConfig = {
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
+  async redirects() {
+    return [{ source: '/', destination: '/coming-soon', permanent: false }];
+  },
   async rewrites() {
     return {
-      beforeFiles: [{ source: '/', destination: '/coming-soon.html' }],
+      beforeFiles: [{ source: '/coming-soon', destination: '/coming-soon.html' }],
       afterFiles: [],
       fallback: [],
     };
