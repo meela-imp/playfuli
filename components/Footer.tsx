@@ -1,17 +1,12 @@
+import Image from 'next/image';
+
 export default function Footer() {
   return (
     <footer className="site-footer">
       <div className="footer-grid">
         <div className="footer-col-brand">
           <div className="footer-logo">
-            <span>playful</span>
-            <svg width="9" height="20" viewBox="0 0 14 55" style={{ marginBottom: 4 }}>
-              <defs><clipPath id="fc"><rect x="1" y="16" width="12" height="39" rx="6" /></clipPath></defs>
-              <rect x="1" y="16" width="12" height="39" rx="6" fill="#3A7D9A" />
-              <rect x="1" y="24" width="12" height="7" fill="rgba(255,255,255,0.45)" clipPath="url(#fc)" />
-              <rect x="1" y="38" width="12" height="7" fill="rgba(255,255,255,0.45)" clipPath="url(#fc)" />
-              <ellipse cx="7" cy="6" rx="4.5" ry="6" fill="#F2D888" />
-            </svg>
+            <Image src="/playfuli-logo.png" alt="Playfuli" width={110} height={36} style={{ filter: 'brightness(0) invert(1)' }} />
           </div>
           <p className="footer-tagline">Where great gifts come from.</p>
           <form className="footer-email-form" onSubmit={(e) => e.preventDefault()}>

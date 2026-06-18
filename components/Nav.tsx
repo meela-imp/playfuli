@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useCallback } from 'react';
+import Image from 'next/image';
 
 export default function Nav() {
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -33,14 +34,7 @@ export default function Nav() {
   return (
     <nav aria-label="Main navigation">
       <a className="logo" href="/">
-        <span>playful</span>
-        <svg width="8" height="18" viewBox="0 0 14 55" style={{ marginBottom: 4 }}>
-          <defs><clipPath id="nc"><rect x="1" y="16" width="12" height="39" rx="6"/></clipPath></defs>
-          <rect x="1" y="16" width="12" height="39" rx="6" fill="#3A7D9A"/>
-          <rect x="1" y="24" width="12" height="7" fill="rgba(255,255,255,0.45)" clipPath="url(#nc)"/>
-          <rect x="1" y="38" width="12" height="7" fill="rgba(255,255,255,0.45)" clipPath="url(#nc)"/>
-          <ellipse cx="7" cy="6" rx="4.5" ry="6" fill="#F2D888"/>
-        </svg>
+        <Image src="/playfuli-logo.png" alt="Playfuli" width={110} height={36} priority />
       </a>
 
       <div className="nav-center">
