@@ -12,7 +12,10 @@ const nextConfig: NextConfig = {
   },
   async rewrites() {
     return {
-      beforeFiles: [{ source: '/coming-soon', destination: '/coming-soon.html' }],
+      beforeFiles: [
+        { source: '/coming-soon', destination: '/coming-soon.html' },
+        { source: '/blog', destination: '/blog-shell.html' },
+      ],
       afterFiles: [],
       fallback: [],
     };

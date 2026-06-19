@@ -19,6 +19,33 @@ export const post = defineType({
       validation: (r) => r.required(),
     }),
     defineField({
+      name: 'category',
+      title: 'Category',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Gift Guides', value: 'Gift Guides' },
+          { title: 'Play Ideas', value: 'Play Ideas' },
+          { title: 'Party Planning', value: 'Party Planning' },
+          { title: 'Playfuli News', value: 'Playfuli News' },
+        ],
+        layout: 'radio',
+      },
+      validation: (r) => r.required(),
+    }),
+    defineField({
+      name: 'featured',
+      title: 'Featured (show in hero carousel)',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'emoji',
+      title: 'Card emoji',
+      type: 'string',
+      description: 'Single emoji shown in the card thumbnail e.g. 🦕',
+    }),
+    defineField({
       name: 'publishedAt',
       title: 'Published at',
       type: 'datetime',
@@ -54,6 +81,6 @@ export const post = defineType({
   ],
   orderings: [{ title: 'Published date, newest', name: 'publishedAtDesc', by: [{ field: 'publishedAt', direction: 'desc' }] }],
   preview: {
-    select: { title: 'title', subtitle: 'publishedAt', media: 'coverImage' },
+    select: { title: 'title', subtitle: 'category', media: 'coverImage' },
   },
 });

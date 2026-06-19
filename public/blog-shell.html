@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Play Favorites — Playfuli Blog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --teal: #084B6D;
+      --periwinkle: #B0BDDF;
+      --baby-blue: #CDE8EF;
+      --baby-blue-dark: #1A5060;
+      --sage: #D2E0CA;
+      --sage-dark: #2A4A2A;
+      --dandelion: #F2D888;
+      --dandelion-dark: #6A5210;
+      --rose: #E8C4C0;
+      --rose-dark: #7A3A34;
+      --snow: #FAFBFD;
+      --mid-grey: #999;
+      --soft-black: #2C2C2C;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: #fff; color: var(--soft-black); }
+
+    /* ═══ Nav ═══ */
+    nav {
+      background: var(--teal);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    nav .logo { display: flex; align-items: flex-end; gap: 0; text-decoration: none; }
+    nav .nav-right { display: flex; align-items: center; gap: 12px; }
+    nav .nav-btn {
+      font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800;
+      padding: 8px 18px; border-radius: 10px; border: none; cursor: pointer;
+      text-decoration: none; transition: opacity 0.2s;
+    }
+    nav .nav-btn:hover { opacity: 0.9; }
+    nav .nav-btn-primary { background: #fff; color: var(--teal); }
+    nav .nav-btn-secondary { background: rgba(255,255,255,0.15); color: #fff; }
+    nav .nav-link-login {
+      font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700;
+      color: rgba(255,255,255,0.7); text-decoration: none; transition: color 0.2s;
+    }
+    nav .nav-link-login:hover { color: #fff; }
+
+    /* ═══ Blog hero ═══ */
+    .blog-hero { padding: 52px 40px 56px; max-width: 1200px; margin: 0 auto; position: relative; overflow: hidden; }
+    .blog-hero-grid { display: grid; grid-template-columns: 1fr 300px; gap: 48px; position: relative; z-index: 1; }
+    .blog-hero-left { display: flex; flex-direction: column; min-width: 0; }
+    .blog-hero-right { display: flex; flex-direction: column; gap: 16px; }
+    .page-eyebrow { font-size: 12px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--periwinkle); margin-bottom: 8px; }
+    .page-title { font-family: 'Fredoka', sans-serif; font-size: 52px; font-weight: 600; color: var(--teal); line-height: 1.1; margin-bottom: 10px; display: block; }
+    .title-i { display: inline-block; vertical-align: baseline; margin: 0 1px; flex-shrink: 0; }
+    .page-sub { font-size: 16px; color: var(--mid-grey); font-weight: 600; max-width: 520px; }
+
+    /* ═══ Header confetti ═══ */
+    .hconfetti { position: absolute; pointer-events: none; z-index: 0; border-radius: 50%; opacity: 0.38; }
+    .hconfetti.sq { border-radius: 2px; }
+
+    /* ═══ Page-wide confetti ═══ */
+    body { position: relative; }
+    #page-confetti { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    #page-confetti .pc { position: absolute; border-radius: 50%; opacity: 0.22; }
+    #page-confetti .pc.sq { border-radius: 2px; }
+    nav, .blog-hero, .cat-section, .section-divider, .cta-banner, footer { position: relative; z-index: 1; }
+
+    /* ═══ Search ═══ */
+    .search-wrap { position: relative; width: 100%; z-index: 10; }
+    .search-input-row {
+      display: flex; align-items: center; gap: 10px;
+      background: #fff; border: 1.5px solid #dde2ed; border-radius: 99px;
+      padding: 9px 18px; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-input-row:focus-within { border-color: var(--periwinkle); box-shadow: 0 0 0 3px rgba(176,189,223,0.15); }
+    .search-icon { color: var(--periwinkle); font-size: 16px; flex-shrink: 0; line-height: 1; }
+    .search-input {
+      border: none; outline: none; flex: 1; background: transparent;
+      font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 600; color: var(--teal);
+    }
+    .search-input::placeholder { color: #bbb; font-weight: 600; }
+
+    /* ═══ Featured Carousel ═══ */
+    .featured-carousel { position: relative; overflow: hidden; margin-top: 28px; }
+    .featured-track { display: flex; border-radius: 20px; }
+    .featured-slide {
+      min-width: 100%; flex-shrink: 0; display: flex; border-radius: 20px; overflow: hidden;
+      min-height: 360px; cursor: pointer;
+    }
+    .featured-image {
+      width: 48%; display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 12px; flex-shrink: 0;
+    }
+    .featured-image .fi-emoji { font-size: 72px; }
+    .featured-image .fi-cat {
+      font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 5px 14px; border-radius: 99px; background: rgba(255,255,255,0.35);
+      align-self: center; width: fit-content;
+    }
+    .featured-body {
+      flex: 1; min-width: 0; background: #fff; padding: 40px 44px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .featured-cat-pill {
+      display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 1px;
+      text-transform: uppercase; padding: 4px 12px; border-radius: 99px; margin-bottom: 16px;
+      align-self: flex-start; width: fit-content;
+    }
+    .featured-body h2 {
+      font-family: 'Fredoka', sans-serif; font-size: 28px; font-weight: 600;
+      color: var(--teal); line-height: 1.2; margin-bottom: 10px;
+    }
+    .featured-body p { font-size: 15px; color: #666; line-height: 1.6; margin-bottom: 24px; font-weight: 600; }
+    .featured-read {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 800; color: var(--teal); text-decoration: none;
+    }
+    .featured-read:hover { text-decoration: underline; }
+    .featured-controls { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; }
+    .featured-dots { display: flex; gap: 8px; }
+    .featured-dot { width: 8px; height: 8px; border-radius: 50%; background: #ddd; border: none; cursor: pointer; padding: 0; transition: all 0.2s; }
+    .featured-dot.active { background: var(--teal); width: 24px; border-radius: 4px; }
+    .featured-arrows { display: flex; gap: 8px; }
+    .featured-arrow {
+      width: 36px; height: 36px; border-radius: 50%; border: 2px solid #eee;
+      background: #fff; cursor: pointer; font-size: 16px; color: var(--teal);
+      display: flex; align-items: center; justify-content: center; transition: border-color 0.15s;
+    }
+    .featured-arrow:hover { border-color: var(--periwinkle); }
+
+    /* ═══ Category Sections ═══ */
+    .cat-section { max-width: 1200px; margin: 0 auto; padding: 0 40px 52px; }
+    .cat-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .cat-title { font-family: 'Fredoka', sans-serif; font-size: 24px; font-weight: 600; color: var(--teal); }
+    .cat-header-right { display: flex; align-items: center; gap: 12px; }
+    .cat-arrows { display: flex; gap: 6px; }
+    .cat-arrow {
+      width: 30px; height: 30px; border-radius: 50%; border: 2px solid #e8ecf0;
+      background: #fff; cursor: pointer; font-size: 15px; color: var(--teal);
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.15s, background 0.15s; line-height: 1;
+    }
+    .cat-arrow:hover { border-color: var(--periwinkle); background: var(--snow); }
+    .cat-see-all { font-size: 13px; font-weight: 800; color: var(--periwinkle); text-decoration: none; transition: color 0.15s; }
+    .cat-see-all:hover { color: var(--teal); }
+    .cards-row {
+      display: flex; gap: 16px;
+      overflow-x: auto; padding-bottom: 12px;
+      scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+    }
+    .cards-row::-webkit-scrollbar { height: 4px; }
+    .cards-row::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 2px; }
+    .cards-row::-webkit-scrollbar-thumb { background: var(--periwinkle); border-radius: 2px; }
+    .article-card {
+      min-width: 260px; max-width: 260px; border-radius: 16px; overflow: hidden;
+      background: #fff; border: 1.5px solid #eef0f3;
+      cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+      scroll-snap-align: start; flex-shrink: 0; text-decoration: none;
+      display: flex; flex-direction: column;
+    }
+    .article-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(8,75,109,0.1); }
+    .card-image { height: 140px; display: flex; align-items: center; justify-content: center; font-size: 44px; flex-shrink: 0; }
+    .card-body { padding: 16px; display: flex; flex-direction: column; flex: 1; }
+    .card-pill { display: inline-block; font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 3px 10px; border-radius: 99px; margin-bottom: 10px; align-self: flex-start; }
+    .card-title { font-family: 'Fredoka', sans-serif; font-size: 16px; font-weight: 600; color: var(--teal); line-height: 1.25; margin-bottom: 8px; }
+    .card-excerpt { font-size: 12px; color: #777; font-weight: 600; line-height: 1.5; margin-bottom: 14px; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-read { font-size: 12px; font-weight: 800; color: var(--teal); text-decoration: none; }
+    .card-read:hover { text-decoration: underline; }
+
+    /* ═══ Divider ═══ */
+    .section-divider { max-width: 1200px; margin: 0 auto 48px; padding: 0 40px; }
+    .section-divider hr { border: none; border-top: 1px solid #eee; }
+
+    /* ═══ Trending Sidebar ═══ */
+    .trending-sidebar {
+      background: #fff; border: 1.5px solid #eef0f3; border-radius: 20px; padding: 22px 20px; flex: 1;
+    }
+    .trending-header {
+      font-family: 'Fredoka', sans-serif; font-size: 18px; font-weight: 600; color: var(--teal);
+      margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1.5px solid #eef0f3;
+    }
+    .trending-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 11px 0; border-bottom: 1px solid #f2f4f7;
+      text-decoration: none; cursor: pointer;
+    }
+    .trending-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .trending-num {
+      font-size: 20px; font-weight: 600; font-family: 'Fredoka', sans-serif;
+      color: #e2e6f0; line-height: 1; flex-shrink: 0; width: 24px; text-align: center; padding-top: 1px;
+    }
+    .trending-body { min-width: 0; }
+    .trending-cat { font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--periwinkle); margin-bottom: 3px; }
+    .trending-title { font-family: 'Fredoka', sans-serif; font-size: 14px; font-weight: 600; color: var(--teal); line-height: 1.3; }
+    .trending-item:hover .trending-title { text-decoration: underline; }
+
+    /* ═══ Newsletter CTA ═══ */
+    .newsletter-cta { max-width: 1200px; margin: 0 auto 52px; padding: 0 40px; }
+    .newsletter-inner { background: #EEF0F9; border: 1.5px solid #d4daf0; border-radius: 20px; padding: 36px 44px; }
+    .newsletter-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--periwinkle); margin-bottom: 8px; }
+    .newsletter-title { font-family: 'Fredoka', sans-serif; font-size: 28px; font-weight: 600; color: var(--teal); line-height: 1.15; margin-bottom: 20px; }
+    .newsletter-bullets { display: flex; flex-direction: row; gap: 32px; margin-bottom: 20px; }
+    .newsletter-bullet { flex: 1; display: flex; gap: 14px; align-items: flex-start; }
+    .bullet-icon { font-size: 20px; flex-shrink: 0; line-height: 1.2; }
+    .bullet-title { font-size: 15px; font-weight: 800; color: var(--teal); margin-bottom: 2px; }
+    .bullet-desc { font-size: 13px; color: #777; font-weight: 600; line-height: 1.5; }
+    .newsletter-form { display: flex; gap: 10px; max-width: 440px; }
+    .newsletter-input {
+      flex: 1; border: 1.5px solid #d4d9eb; border-radius: 10px;
+      padding: 12px 16px; font-family: 'Nunito', sans-serif; font-size: 14px;
+      color: var(--teal); background: #fff; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .newsletter-input:focus { border-color: var(--periwinkle); box-shadow: 0 0 0 3px rgba(176,189,223,0.18); }
+    .newsletter-input::placeholder { color: #bbb; }
+    .newsletter-submit {
+      font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 800;
+      background: var(--teal); color: #fff; border: none; border-radius: 10px;
+      padding: 12px 20px; cursor: pointer; white-space: nowrap; transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .newsletter-submit:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(8,75,109,0.2); }
+
+    /* ═══ New to Playfuli ═══ */
+    .new-to-banner { max-width: 1200px; margin: 0 auto 52px; padding: 0 40px; }
+    .new-to-inner {
+      background: var(--snow); border: 1.5px solid #eef0f3; border-radius: 20px;
+      padding: 40px 48px; display: grid; grid-template-columns: 1fr 1.3fr; gap: 48px; align-items: center;
+    }
+    .new-to-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--periwinkle); margin-bottom: 8px; }
+    .new-to-title { font-family: 'Fredoka', sans-serif; font-size: 30px; font-weight: 600; color: var(--teal); line-height: 1.15; margin-bottom: 10px; }
+    .new-to-desc { font-size: 14px; color: #777; font-weight: 600; line-height: 1.55; margin-bottom: 22px; }
+    .new-to-cta {
+      display: inline-block; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800;
+      background: var(--teal); color: #fff; text-decoration: none;
+      padding: 11px 22px; border-radius: 10px; transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .new-to-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(8,75,109,0.2); }
+    .new-to-articles { display: flex; flex-direction: column; }
+    .new-to-article {
+      display: flex; gap: 14px; align-items: center; padding: 13px 0;
+      border-bottom: 1px solid #eef0f3; text-decoration: none; transition: opacity 0.15s;
+    }
+    .new-to-article:first-child { padding-top: 0; }
+    .new-to-article:last-child { border-bottom: none; padding-bottom: 0; }
+    .new-to-article:hover { opacity: 0.75; }
+    .new-to-article-img { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .new-to-article-cat { font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--periwinkle); margin-bottom: 2px; }
+    .new-to-article-title { font-family: 'Fredoka', sans-serif; font-size: 14px; font-weight: 600; color: var(--teal); line-height: 1.3; }
+
+    /* ═══ Final CTA ═══ */
+    .final-cta { padding: 80px 24px; background: #EEF0F9; text-align: center; position: relative; overflow: hidden; }
+    .final-cta h2 { font-family: 'Fredoka', sans-serif; font-size: 36px; font-weight: 600; color: var(--teal); margin-bottom: 12px; }
+    .final-cta p { font-size: 16px; color: var(--teal); margin-bottom: 32px; max-width: 460px; margin-left: auto; margin-right: auto; opacity: 0.75; }
+    .btn-primary {
+      font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800;
+      padding: 14px 32px; border-radius: 12px; border: none; cursor: pointer;
+      text-decoration: none; display: inline-block; transition: transform 0.2s, box-shadow 0.2s;
+      background: var(--teal); color: #fff;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(8,75,109,0.2); }
+
+    /* ═══ Footer ═══ */
+    .site-footer { background: var(--teal); color: rgba(255,255,255,0.7); padding: 64px 40px 0; }
+    .footer-grid {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr;
+      gap: 48px; padding-bottom: 48px;
+    }
+    .footer-col-brand .footer-logo { display: flex; align-items: flex-end; gap: 0; text-decoration: none; margin-bottom: 12px; }
+    .footer-col-brand .footer-tagline { font-size: 15px; color: rgba(255,255,255,0.6); margin-bottom: 24px; line-height: 1.5; }
+    .footer-email-form { display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.25); padding-bottom: 4px; margin-bottom: 28px; }
+    .footer-email-form input { flex: 1; background: none; border: none; color: #fff; font-family: 'Nunito', sans-serif; font-size: 14px; padding: 8px 0; outline: none; }
+    .footer-email-form input::placeholder { color: rgba(255,255,255,0.4); }
+    .footer-email-form button { background: none; border: none; color: rgba(255,255,255,0.6); font-size: 18px; cursor: pointer; padding: 4px 8px; transition: color 0.2s; }
+    .footer-email-form button:hover { color: #fff; }
+    .footer-legal { font-size: 11px; color: rgba(255,255,255,0.35); line-height: 1.6; }
+    .footer-legal a { color: rgba(255,255,255,0.5); text-decoration: underline; }
+    .footer-col h4 { font-family: 'Fredoka', sans-serif; font-size: 16px; font-weight: 500; color: #fff; margin-bottom: 18px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul li a { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.55); text-decoration: none; text-transform: uppercase; letter-spacing: 0.5px; transition: color 0.2s; }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-social { display: flex; gap: 14px; margin-top: 4px; }
+    .footer-social a { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.55); text-decoration: none; transition: color 0.2s; }
+    .footer-social a:hover { color: #fff; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); max-width: 1100px; margin: 0 auto; padding: 20px 0; text-align: center; font-size: 12px; color: rgba(255,255,255,0.3); }
+
+    /* ═══ Responsive ═══ */
+    @media (max-width: 768px) {
+      nav .nav-btn-secondary { display: none; }
+      .blog-hero { padding: 36px 20px 36px; }
+      .blog-hero-grid { grid-template-columns: 1fr; }
+      .page-title { font-size: 32px; }
+      .cat-section, .section-divider { padding-left: 20px; padding-right: 20px; }
+      .featured-slide { flex-direction: column; min-height: auto; }
+      .featured-image { width: 100%; min-height: 160px; }
+      .featured-body { padding: 24px; }
+      .featured-body h2 { font-size: 22px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 36px; }
+      .site-footer { padding: 48px 24px 0; }
+      .final-cta h2 { font-size: 28px; }
+      .newsletter-bullets { flex-direction: column; gap: 16px; }
+      .newsletter-cta { padding: 0 20px; }
+      .new-to-banner { padding: 0 20px; }
+      .new-to-inner { grid-template-columns: 1fr; gap: 28px; padding: 28px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Page-wide confetti -->
+<div id="page-confetti" aria-hidden="true"></div>
+<script>
+(function() {
+  const colors = ['#F2D888','#E8C4C0','#B0BDDF','#CDE8EF','#D2E0CA','#084B6D'];
+  const el = document.getElementById('page-confetti');
+  let s = 12345;
+  const rand = () => { s = (s * 1664525 + 1013904223) & 0x7fffffff; return s / 0x7fffffff; };
+  for (let i = 0; i < 140; i++) {
+    const x = rand() * 100, y = rand() * 100, size = 4 + Math.floor(rand() * 5);
+    const rot = Math.floor(rand() * 90) - 45, sq = rand() > 0.55;
+    const col = colors[Math.floor(rand() * colors.length)];
+    const d = document.createElement('div');
+    d.className = 'pc' + (sq ? ' sq' : '');
+    d.style.cssText = `left:${x.toFixed(1)}%;top:${y.toFixed(1)}%;width:${size}px;height:${size}px;background:${col};transform:rotate(${rot}deg)`;
+    el.appendChild(d);
+  }
+})();
+</script>
+
+<!-- Nav -->
+<nav>
+  <a class="logo" href="/">
+    <img src="/playfuli-logo-white.svg" alt="Playfuli" style="display:block;height:28px">
+  </a>
+  <div class="nav-right">
+    <a href="/login" class="nav-link-login">Log in</a>
+    <a href="/#how-it-works" class="nav-btn nav-btn-secondary">How it works</a>
+    <a href="/dashboard" class="nav-btn nav-btn-primary">Create a profile</a>
+  </div>
+</nav>
+
+<!-- Blog Hero -->
+<div class="blog-hero">
+  <div class="hconfetti"    style="left:620px;top:18px; width:8px;height:8px; background:#F2D888;transform:rotate(15deg)"></div>
+  <div class="hconfetti sq" style="left:720px;top:8px;  width:6px;height:6px; background:#E8C4C0;transform:rotate(-20deg)"></div>
+  <div class="hconfetti"    style="left:755px;top:55px; width:9px;height:9px; background:#B0BDDF;transform:rotate(35deg)"></div>
+  <div class="hconfetti sq" style="left:680px;top:90px; width:5px;height:5px; background:#D2E0CA;transform:rotate(-15deg)"></div>
+  <div class="hconfetti"    style="left:760px;top:120px;width:7px;height:7px; background:#084B6D;transform:rotate(40deg)"></div>
+  <div class="hconfetti sq" style="left:640px;top:150px;width:5px;height:5px; background:#E8C4C0;transform:rotate(-30deg)"></div>
+  <div class="hconfetti"    style="left:590px;top:185px;width:6px;height:6px; background:#CDE8EF;transform:rotate(20deg)"></div>
+  <div class="hconfetti"    style="left:790px;top:165px;width:4px;height:4px; background:#F2D888;transform:rotate(-10deg)"></div>
+  <div class="hconfetti sq" style="left:8px;  top:55px; width:7px;height:7px; background:#D2E0CA;transform:rotate(25deg)"></div>
+  <div class="hconfetti"    style="left:5px;  top:110px;width:5px;height:5px; background:#F2D888;transform:rotate(-15deg)"></div>
+  <div class="hconfetti"    style="left:14px; top:170px;width:4px;height:4px; background:#CDE8EF;transform:rotate(30deg)"></div>
+
+  <div class="blog-hero-grid">
+    <div class="blog-hero-left">
+      <div class="page-eyebrow">Playfuli Blog</div>
+      <h1 class="page-title">Play Favor<svg class="title-i" width="16" height="46" viewBox="0 0 14 74" aria-hidden="true"><defs><clipPath id="tc"><rect x="1" y="16" width="12" height="58" rx="6"/></clipPath></defs><rect x="1" y="16" width="12" height="15" fill="#3A7D9A" clip-path="url(#tc)"/><rect x="1" y="31" width="12" height="14" fill="#8BBDD0" clip-path="url(#tc)"/><rect x="1" y="45" width="12" height="15" fill="#3A7D9A" clip-path="url(#tc)"/><rect x="1" y="60" width="12" height="14" fill="#8BBDD0" clip-path="url(#tc)"/><ellipse cx="7" cy="6" rx="4" ry="5" fill="#F2D888"/></svg>tes</h1>
+      <p class="page-sub">A collection of articles and creative inspiration curated to simplify how you shop, play, and celebrate the unique kid in your life.</p>
+
+      <!-- Featured Carousel -->
+      <div class="featured-carousel">
+        <div class="featured-track" id="featuredTrack">
+          <div class="featured-slide">
+            <div class="featured-image" style="background:var(--baby-blue)">
+              <span class="fi-emoji">🦕</span>
+              <span class="fi-cat" style="color:var(--baby-blue-dark)">Gift Guides</span>
+            </div>
+            <div class="featured-body">
+              <span class="featured-cat-pill" style="background:var(--baby-blue);color:var(--baby-blue-dark)">Gift Guides</span>
+              <h2>The Ultimate Dinosaur Gift Guide for Kids 3–6</h2>
+              <p>From roar-worthy dig kits to lifelike figurines — the best dino gifts for little palaeontologists, curated by age and play style.</p>
+              <a href="/blog/dinosaur-gift-guide" class="featured-read">Read article →</a>
+            </div>
+          </div>
+          <div class="featured-slide">
+            <div class="featured-image" style="background:var(--dandelion)">
+              <span class="fi-emoji">🎂</span>
+              <span class="fi-cat" style="color:var(--dandelion-dark)">Party Planning</span>
+            </div>
+            <div class="featured-body">
+              <span class="featured-cat-pill" style="background:var(--dandelion);color:var(--dandelion-dark)">Party Planning</span>
+              <h2>The No-Stress Birthday Party Planning Checklist</h2>
+              <p>Eight weeks out to the big day — everything you need to do and exactly when to do it, so nothing falls through the cracks.</p>
+              <a href="/blog/birthday-party-checklist" class="featured-read">Read article →</a>
+            </div>
+          </div>
+          <div class="featured-slide">
+            <div class="featured-image" style="background:var(--sage)">
+              <span class="fi-emoji">🌿</span>
+              <span class="fi-cat" style="color:var(--sage-dark)">Play Ideas</span>
+            </div>
+            <div class="featured-body">
+              <span class="featured-cat-pill" style="background:var(--sage);color:var(--sage-dark)">Play Ideas</span>
+              <h2>5 Sensory Play Ideas for Rainy Afternoons</h2>
+              <p>No fancy supplies needed. These mess-friendly activities keep little hands busy and imaginations running wild all afternoon long.</p>
+              <a href="/blog/sensory-play-ideas" class="featured-read">Read article →</a>
+            </div>
+          </div>
+          <div class="featured-slide">
+            <div class="featured-image" style="background:var(--rose)">
+              <span class="fi-emoji">🎉</span>
+              <span class="fi-cat" style="color:var(--rose-dark)">Party Planning</span>
+            </div>
+            <div class="featured-body">
+              <span class="featured-cat-pill" style="background:var(--rose);color:var(--rose-dark)">Party Planning</span>
+              <h2>Best Birthday Party Themes of 2026</h2>
+              <p>From Bluey brunches to dino digs — the themes kids are actually requesting this year, and how to pull each one off.</p>
+              <a href="/blog/birthday-party-themes-2026" class="featured-read">Read article →</a>
+            </div>
+          </div>
+          <div class="featured-slide">
+            <div class="featured-image" style="background:var(--dandelion)">
+              <span class="fi-emoji">🧲</span>
+              <span class="fi-cat" style="color:var(--dandelion-dark)">Gift Guides</span>
+            </div>
+            <div class="featured-body">
+              <span class="featured-cat-pill" style="background:var(--dandelion);color:var(--dandelion-dark)">Gift Guides</span>
+              <h2>LEGO Gift Guide: The Right Set for Every Age</h2>
+              <p>Too easy and they're bored. Too hard and it ends in tears. Here's how to find the sweet spot — by age from 2 to 12.</p>
+              <a href="/blog/lego-gift-guide" class="featured-read">Read article →</a>
+            </div>
+          </div>
+          <div class="featured-slide">
+            <div class="featured-image" style="background:var(--periwinkle)">
+              <span class="fi-emoji">🖍️</span>
+              <span class="fi-cat" style="color:#3a4a7a">Play Ideas</span>
+            </div>
+            <div class="featured-body">
+              <span class="featured-cat-pill" style="background:var(--periwinkle);color:#3a4a7a">Play Ideas</span>
+              <h2>DIY Art Station for Little Creatives</h2>
+              <p>A designated art space changes everything. Here's how to set one up without sacrificing your dining table — or your sanity — forever.</p>
+              <a href="/blog/diy-art-station" class="featured-read">Read article →</a>
+            </div>
+          </div>
+          <div class="featured-slide">
+            <div class="featured-image" style="background:var(--baby-blue)">
+              <span class="fi-emoji">🐾</span>
+              <span class="fi-cat" style="color:var(--baby-blue-dark)">Gift Guides</span>
+            </div>
+            <div class="featured-body">
+              <span class="featured-cat-pill" style="background:var(--baby-blue);color:var(--baby-blue-dark)">Gift Guides</span>
+              <h2>Gifts for Kids Who Are Obsessed With Animals</h2>
+              <p>For the kid who wants to be a vet, a zookeeper, and a wildlife photographer — gifts that actually feed that obsession.</p>
+              <a href="/blog/animal-lover-gift-guide" class="featured-read">Read article →</a>
+            </div>
+          </div>
+        </div>
+        <div class="featured-controls">
+          <div class="featured-dots" id="featuredDots"></div>
+          <div class="featured-arrows">
+            <button class="featured-arrow" id="featPrev">‹</button>
+            <button class="featured-arrow" id="featNext">›</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="blog-hero-right">
+      <div class="search-wrap">
+        <div class="search-input-row">
+          <span class="search-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+          <input class="search-input" id="blogSearch" type="text" placeholder="Search articles, topics, or gift ideas…" autocomplete="off" />
+        </div>
+      </div>
+      <aside class="trending-sidebar" id="trendingSidebar">
+        <div class="trending-header">Trending</div>
+        <!-- populated by JS -->
+      </aside>
+    </div>
+  </div>
+</div>
+
+<!-- Most Recent -->
+<section class="cat-section">
+  <div class="cat-header">
+    <h2 class="cat-title">🕐 Most Recent</h2>
+    <div class="cat-header-right">
+      <div class="cat-arrows">
+        <button class="cat-arrow" onclick="scrollRow('recentRow',-1)">‹</button>
+        <button class="cat-arrow" onclick="scrollRow('recentRow',1)">›</button>
+      </div>
+      <a href="/blog/recent" class="cat-see-all">See all →</a>
+    </div>
+  </div>
+  <div class="cards-row" id="recentRow"></div>
+</section>
+
+<!-- Newsletter CTA -->
+<section class="newsletter-cta">
+  <div class="newsletter-inner">
+    <div class="newsletter-eyebrow">Stay in the loop</div>
+    <h2 class="newsletter-title">The weekly edit for parents who give great gifts</h2>
+    <div class="newsletter-bullets">
+      <div class="newsletter-bullet">
+        <span class="bullet-icon">🎁</span>
+        <div>
+          <div class="bullet-title">Curated, not cluttered</div>
+          <div class="bullet-desc">Handpicked gift ideas matched to age, interests, and play style — nothing generic.</div>
+        </div>
+      </div>
+      <div class="newsletter-bullet">
+        <span class="bullet-icon">🎂</span>
+        <div>
+          <div class="bullet-title">Party planning made easy</div>
+          <div class="bullet-desc">Themes, timelines, and the exact details that make birthdays memorable without the stress.</div>
+        </div>
+      </div>
+      <div class="newsletter-bullet">
+        <span class="bullet-icon">✨</span>
+        <div>
+          <div class="bullet-title">Fresh every week</div>
+          <div class="bullet-desc">New play ideas, seasonal guides, and the occasional tip your kids will love you for.</div>
+        </div>
+      </div>
+    </div>
+    <form class="newsletter-form" onsubmit="handleNewsletter(event)">
+      <input class="newsletter-input" id="nlEmail" type="email" placeholder="Email address…" required />
+      <button class="newsletter-submit" id="nlBtn" type="submit">Sign up for free</button>
+    </form>
+  </div>
+</section>
+
+<!-- Gift Guides -->
+<section class="cat-section">
+  <div class="cat-header">
+    <h2 class="cat-title">🎁 Gift Guides</h2>
+    <div class="cat-header-right">
+      <div class="cat-arrows">
+        <button class="cat-arrow" onclick="scrollRow('giftRow',-1)">‹</button>
+        <button class="cat-arrow" onclick="scrollRow('giftRow',1)">›</button>
+      </div>
+      <a href="/blog?category=Gift+Guides" class="cat-see-all">See all →</a>
+    </div>
+  </div>
+  <div class="cards-row" id="giftRow"></div>
+</section>
+
+<!-- Play Ideas -->
+<section class="cat-section">
+  <div class="cat-header">
+    <h2 class="cat-title">✨ Play Ideas</h2>
+    <div class="cat-header-right">
+      <div class="cat-arrows">
+        <button class="cat-arrow" onclick="scrollRow('playRow',-1)">‹</button>
+        <button class="cat-arrow" onclick="scrollRow('playRow',1)">›</button>
+      </div>
+      <a href="/blog?category=Play+Ideas" class="cat-see-all">See all →</a>
+    </div>
+  </div>
+  <div class="cards-row" id="playRow"></div>
+</section>
+
+<!-- Party Planning -->
+<section class="cat-section">
+  <div class="cat-header">
+    <h2 class="cat-title">🎂 Party Planning</h2>
+    <div class="cat-header-right">
+      <div class="cat-arrows">
+        <button class="cat-arrow" onclick="scrollRow('bdayRow',-1)">‹</button>
+        <button class="cat-arrow" onclick="scrollRow('bdayRow',1)">›</button>
+      </div>
+      <a href="/blog?category=Party+Planning" class="cat-see-all">See all →</a>
+    </div>
+  </div>
+  <div class="cards-row" id="bdayRow"></div>
+</section>
+
+<!-- Playfuli News -->
+<section class="cat-section">
+  <div class="cat-header">
+    <h2 class="cat-title">📣 Playfuli News</h2>
+    <div class="cat-header-right">
+      <div class="cat-arrows">
+        <button class="cat-arrow" onclick="scrollRow('newsRow',-1)">‹</button>
+        <button class="cat-arrow" onclick="scrollRow('newsRow',1)">›</button>
+      </div>
+      <a href="/blog?category=Playfuli+News" class="cat-see-all">See all →</a>
+    </div>
+  </div>
+  <div class="cards-row" id="newsRow"></div>
+</section>
+
+<!-- New to Playfuli -->
+<div class="new-to-banner">
+  <div class="new-to-inner">
+    <div>
+      <div class="new-to-eyebrow">Collection</div>
+      <h2 class="new-to-title">New to Play Favorites? Start here.</h2>
+      <p class="new-to-desc">Our most-read articles since we launched — the gift guides, party tips, and play ideas that parents keep coming back to.</p>
+      <a href="/blog" class="new-to-cta">View all articles</a>
+    </div>
+    <div class="new-to-articles" id="newToArticles"></div>
+  </div>
+</div>
+
+<!-- Final CTA -->
+<div class="final-cta">
+  <h2>Make gifting easy for everyone</h2>
+  <p>Your guests want to give a gift that <em>actually</em> gets played with. Give them a window into your child's world with a 5-minute play profile.</p>
+  <a href="/dashboard" class="btn-primary">Create a Play Profile</a>
+</div>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-col-brand">
+      <div class="footer-logo">
+        <img src="/playfuli-logo-white.svg" alt="Playfuli" style="display:block;height:28px">
+      </div>
+      <p class="footer-tagline">Where great gifts come from.</p>
+      <form class="footer-email-form" onsubmit="handleFooterSignup(event)">
+        <input id="footerEmail" type="email" placeholder="Your email" />
+        <button id="footerBtn" type="submit">→</button>
+      </form>
+      <div class="footer-legal">
+        <a href="/terms">Terms of Service</a> · <a href="/privacy">Privacy Policy</a><br/>
+        © 2026 Playfuli. All rights reserved.
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="/#how-it-works">How it works</a></li>
+        <li><a href="/dashboard">Create a profile</a></li>
+        <li><a href="/about">About us</a></li>
+        <li><a href="/shop">Shop</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Parents &amp; Kids</h4>
+      <ul>
+        <li><a href="/blog?category=Gift+Guides">Gift guides</a></li>
+        <li><a href="/blog?category=Play+Ideas">Play ideas</a></li>
+        <li><a href="/blog?category=Party+Planning">Birthday planning</a></li>
+        <li><a href="/faq">FAQs</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="/login">Log in</a></li>
+        <li><a href="/contact">Contact us</a></li>
+      </ul>
+      <div class="footer-social" style="margin-top:14px">
+        <a href="#">Instagram →</a>
+      </div>
+      <div class="footer-social"><a href="#">TikTok →</a></div>
+      <div class="footer-social"><a href="#">LinkedIn →</a></div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Playfuli. All rights reserved.</div>
+</footer>
+
+<script>
+/* ═══ Fallback data (shown when Sanity is empty) ═══ */
+const GIFT_GUIDES = [
+  { emoji:'🦕', color:'baby-blue', title:'The Ultimate Dinosaur Gift Guide (Ages 3–6)', excerpt:'From roar-worthy dig kits to lifelike figurines, curated by age and play style.', slug:'dinosaur-gift-guide' },
+  { emoji:'🌳', color:'sage',      title:'Best Outdoor Toys for Active Toddlers', excerpt:'These picks survive mud, sun, and the most enthusiastic two-year-olds.', slug:'outdoor-toys-toddlers' },
+  { emoji:'🎨', color:'rose',      title:'Art Lovers Gift Guide: 10 Picks They\'ll Actually Use', excerpt:'No dried-out markers here. Art supplies built for little hands that mean business.', slug:'art-gift-guide' },
+  { emoji:'🧲', color:'baby-blue', title:'LEGO Gift Guide: The Right Set for Every Age', excerpt:'Here\'s how to find the LEGO sweet spot — broken down by age from 2 to 12.', slug:'lego-gift-guide' },
+  { emoji:'🐾', color:'dandelion', title:'Gifts for Kids Who Are Obsessed With Animals', excerpt:'For the kid who wants to be a vet, a zookeeper, and a wildlife photographer.', slug:'animal-lover-gift-guide' },
+  { emoji:'🚀', color:'sage',      title:'The STEM & Science Gift Guide for Curious Kids', excerpt:'Experiments and gadgets that make kids say "wait, that\'s actually how it works?"', slug:'stem-gift-guide' },
+];
+const PLAY_IDEAS = [
+  { emoji:'🌿', color:'sage',      title:'5 Sensory Play Ideas for Rainy Afternoons', excerpt:'No fancy supplies needed. These activities keep little hands busy all afternoon.', slug:'sensory-play-ideas' },
+  { emoji:'🍳', color:'rose',      title:'How to Set Up the Perfect Pretend Play Kitchen', excerpt:'A little organisation goes a long way. Here\'s how to build a play kitchen that gets used.', slug:'pretend-play-kitchen' },
+  { emoji:'🔭', color:'baby-blue', title:'Outdoor Scavenger Hunt for Little Explorers', excerpt:'Print, hide, and watch them go. Works for ages 3–8 and costs nothing.', slug:'outdoor-scavenger-hunt' },
+  { emoji:'🖍️', color:'dandelion', title:'DIY Art Station for Little Creatives', excerpt:'A designated art space changes everything — without sacrificing your dining table forever.', slug:'diy-art-station' },
+  { emoji:'🧱', color:'baby-blue', title:'Rainy Day Building Challenges for Kids', excerpt:'Give them a prompt and step back. Works with LEGO, blocks, or whatever\'s lying around.', slug:'building-challenges' },
+  { emoji:'⚽', color:'sage',      title:'10 Backyard Games for Active Kids', excerpt:'No equipment required for most of these. Just a garden and a kid who can\'t sit still.', slug:'backyard-games' },
+];
+const BDAY_PLANNING = [
+  { emoji:'📋', color:'dandelion', title:'The No-Stress Birthday Party Planning Checklist', excerpt:'Eight weeks out to the big day — everything you need and exactly when to do it.', slug:'birthday-party-checklist' },
+  { emoji:'🎉', color:'rose',      title:'Best Birthday Party Themes of 2026', excerpt:'From Bluey brunches to dino digs, the themes kids are actually asking for this year.', slug:'birthday-party-themes-2026' },
+  { emoji:'✉️', color:'baby-blue', title:'How to Write the Perfect Kids Party Invite', excerpt:'Short, clear, and cute wins every time. A few lines that get RSVPs back fast.', slug:'kids-party-invite' },
+  { emoji:'🌤️', color:'sage',      title:'Outdoor vs Indoor Parties: How to Choose', excerpt:'Weather, headcount, and the chaos threshold of your household — the honest guide.', slug:'outdoor-vs-indoor-party' },
+  { emoji:'🎂', color:'dandelion', title:'Birthday Cake Ideas for Every Kid', excerpt:'From the kid who wants a dinosaur to the one who just wants sprinkles on everything.', slug:'birthday-cake-ideas' },
+  { emoji:'🎁', color:'rose',      title:'Party Favours That Parents Won\'t Hate', excerpt:'Not plastic. Not noisy. Not immediately lost in the car.', slug:'party-favours' },
+];
+const PLAYFULI_NEWS = [
+  { emoji:'🎉', color:'periwinkle', title:'Introducing Playfuli: A Better Way to Give Gifts Kids Actually Love', excerpt:'We built Playfuli because we were tired of guessing. Here\'s the story behind the app.', slug:'introducing-playfuli' },
+  { emoji:'✨', color:'baby-blue',  title:'New Feature: Interest Tags Let Parents Get More Specific', excerpt:'You can now add custom interest tags to your child\'s profile.', slug:'interest-tags-feature' },
+  { emoji:'🤝', color:'sage',       title:'Playfuli Partners With KidsMart to Expand Our Gift Catalogue', excerpt:'More curated picks, better prices, and faster delivery. Our first retail partnership is live.', slug:'kidsmart-partnership' },
+  { emoji:'📣', color:'dandelion',  title:'Playfuli Is Now Available in Canada', excerpt:'Our Canadian families have been patient — and we\'re finally here.', slug:'playfuli-canada' },
+  { emoji:'💌', color:'rose',       title:'Meet the Parents Behind Playfuli\'s First 1,000 Profiles', excerpt:'We sat down with early users to hear what thoughtful gifting means to them.', slug:'first-thousand-profiles' },
+  { emoji:'🔮', color:'baby-blue',  title:'What\'s Coming to Playfuli in 2026', excerpt:'From group gifting to wishlists you can share anywhere — a sneak peek at what\'s next.', slug:'whats-coming-2026' },
+];
+const RECENT = [
+  { emoji:'🦕', color:'baby-blue', cat:'Gift Guides',    title:'The Ultimate Dinosaur Gift Guide (Ages 3–6)', excerpt:'From roar-worthy dig kits to lifelike figurines, curated by age and play style.', slug:'dinosaur-gift-guide' },
+  { emoji:'🎉', color:'rose',      cat:'Party Planning', title:'Best Birthday Party Themes of 2026', excerpt:'From Bluey brunches to dino digs, the themes kids are actually asking for this year.', slug:'birthday-party-themes-2026' },
+  { emoji:'🌿', color:'sage',      cat:'Play Ideas',     title:'5 Sensory Play Ideas for Rainy Afternoons', excerpt:'No fancy supplies needed. These activities keep little hands busy all afternoon.', slug:'sensory-play-ideas' },
+  { emoji:'🎨', color:'rose',      cat:'Gift Guides',    title:'Art Lovers Gift Guide: 10 Picks They\'ll Use', excerpt:'No dried-out markers here. Art supplies built for little hands that mean business.', slug:'art-gift-guide' },
+  { emoji:'📋', color:'dandelion', cat:'Party Planning', title:'The No-Stress Birthday Party Checklist', excerpt:'Eight weeks out to the big day — everything you need and exactly when to do it.', slug:'birthday-party-checklist' },
+  { emoji:'🖍️', color:'dandelion', cat:'Play Ideas',     title:'DIY Art Station for Little Creatives', excerpt:'A designated art space changes everything — without sacrificing your dining table.', slug:'diy-art-station' },
+];
+
+const CAT_STYLES = {
+  'Gift Guides':    { bg: 'var(--baby-blue)',  color: 'var(--baby-blue-dark)' },
+  'Play Ideas':     { bg: 'var(--sage)',        color: 'var(--sage-dark)' },
+  'Party Planning': { bg: 'var(--dandelion)',   color: 'var(--dandelion-dark)' },
+  'Playfuli News':  { bg: 'var(--periwinkle)',  color: 'var(--teal)' },
+};
+
+const CAT_COLOR_VAR = {
+  'Gift Guides':    'baby-blue',
+  'Play Ideas':     'sage',
+  'Party Planning': 'dandelion',
+  'Playfuli News':  'periwinkle',
+};
+
+/* ═══ Build cards ═══ */
+function buildCards(containerId, articles, defaultCat) {
+  const row = document.getElementById(containerId);
+  if (!row) return;
+  row.innerHTML = '';
+  articles.forEach(a => {
+    const catLabel = defaultCat || a.cat || a.category || '';
+    const style = CAT_STYLES[catLabel] || { bg: 'var(--baby-blue)', color: 'var(--baby-blue-dark)' };
+    const colorVar = a.color ? `var(--${a.color})` : `var(--${CAT_COLOR_VAR[catLabel] || 'baby-blue'})`;
+    const href = a.slug ? `/blog/${typeof a.slug === 'object' ? a.slug.current : a.slug}` : '#';
+    const card = document.createElement('a');
+    card.className = 'article-card';
+    card.href = href;
+    card.innerHTML = `
+      <div class="card-image" style="background:${colorVar}"><span>${a.emoji || '📝'}</span></div>
+      <div class="card-body">
+        <span class="card-pill" style="background:${style.bg};color:${style.color}">${catLabel}</span>
+        <div class="card-title">${a.title}</div>
+        <div class="card-excerpt">${a.excerpt || ''}</div>
+        <span class="card-read">Read more →</span>
+      </div>`;
+    row.appendChild(card);
+  });
+}
+
+/* ═══ Build trending sidebar ═══ */
+function buildTrending(posts) {
+  const sidebar = document.getElementById('trendingSidebar');
+  const top5 = posts.slice(0, 5);
+  sidebar.innerHTML = '<div class="trending-header">Trending</div>' + top5.map((p, i) => {
+    const href = p.slug ? `/blog/${typeof p.slug === 'object' ? p.slug.current : p.slug}` : '#';
+    const cat = p.cat || p.category || '';
+    return `<a href="${href}" class="trending-item">
+      <span class="trending-num">${i + 1}</span>
+      <div class="trending-body">
+        <div class="trending-cat">${cat}</div>
+        <div class="trending-title">${p.title}</div>
+      </div>
+    </a>`;
+  }).join('');
+}
+
+/* ═══ Build "New to Playfuli" articles ═══ */
+function buildNewTo(posts) {
+  const el = document.getElementById('newToArticles');
+  if (!el) return;
+  el.innerHTML = posts.slice(0, 4).map(p => {
+    const href = p.slug ? `/blog/${typeof p.slug === 'object' ? p.slug.current : p.slug}` : '#';
+    const cat = p.cat || p.category || '';
+    const colorVar = p.color ? `var(--${p.color})` : `var(--${CAT_COLOR_VAR[cat] || 'baby-blue'})`;
+    return `<a href="${href}" class="new-to-article">
+      <div class="new-to-article-img" style="background:${colorVar}">${p.emoji || '📝'}</div>
+      <div>
+        <div class="new-to-article-cat">${cat}</div>
+        <div class="new-to-article-title">${p.title}</div>
+      </div>
+    </a>`;
+  }).join('');
+}
+
+function scrollRow(rowId, dir) {
+  const row = document.getElementById(rowId);
+  if (row) row.scrollBy({ left: dir * 276, behavior: 'smooth' });
+}
+
+/* ═══ Featured carousel ═══ */
+function initCarousel() {
+  const track = document.getElementById('featuredTrack');
+  const slides = track.querySelectorAll('.featured-slide');
+  const dotsWrap = document.getElementById('featuredDots');
+  let current = 0;
+
+  function sizeSlides() {
+    const w = track.parentElement.offsetWidth;
+    slides.forEach(s => { s.style.width = w + 'px'; s.style.minWidth = w + 'px'; });
+  }
+  sizeSlides();
+  window.addEventListener('resize', () => { sizeSlides(); goTo(current); });
+
+  dotsWrap.innerHTML = '';
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'featured-dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => goTo(i);
+    dotsWrap.appendChild(dot);
+  });
+
+  function goTo(i) {
+    current = (i + slides.length) % slides.length;
+    const w = slides[0].offsetWidth;
+    track.style.transform = `translateX(-${current * w}px)`;
+    track.style.transition = 'transform 0.4s cubic-bezier(0.4,0,0.2,1)';
+    dotsWrap.querySelectorAll('.featured-dot').forEach((d, j) => d.classList.toggle('active', j === current));
+  }
+
+  document.getElementById('featPrev').onclick = () => goTo(current - 1);
+  document.getElementById('featNext').onclick = () => goTo(current + 1);
+  setInterval(() => goTo(current + 1), 6000);
+}
+
+/* ═══ Search ═══ */
+function initSearch() {
+  const searchInput = document.getElementById('blogSearch');
+  searchInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && searchInput.value.trim()) {
+      window.location.href = '/blog?q=' + encodeURIComponent(searchInput.value.trim());
+    }
+  });
+}
+
+/* ═══ Klaviyo newsletter ═══ */
+async function subscribeKlaviyo(email) {
+  const res = await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=RBxLMG', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', 'revision': '2023-02-22' },
+    body: JSON.stringify({ data: { type: 'subscription', attributes: { list_id: 'TeQ9yk', email } } })
+  });
+  if (!res.ok && res.status !== 202) throw new Error();
+}
+
+async function handleNewsletter(e) {
+  e.preventDefault();
+  const input = document.getElementById('nlEmail');
+  const btn = document.getElementById('nlBtn');
+  btn.textContent = 'Adding you…'; btn.disabled = true; input.disabled = true;
+  try {
+    await subscribeKlaviyo(input.value.trim());
+    btn.textContent = "You're in! 🎉"; btn.style.background = '#D2E0CA'; btn.style.color = '#2A4A2A';
+  } catch {
+    btn.textContent = 'Try again'; btn.disabled = false; input.disabled = false;
+  }
+}
+
+async function handleFooterSignup(e) {
+  e.preventDefault();
+  const input = document.getElementById('footerEmail');
+  const btn = document.getElementById('footerBtn');
+  btn.textContent = '✓'; btn.disabled = true; input.disabled = true;
+  try {
+    await subscribeKlaviyo(input.value.trim());
+  } catch {
+    btn.textContent = '→'; btn.disabled = false; input.disabled = false;
+  }
+}
+
+/* ═══ Load posts from Sanity, fall back to hardcoded ═══ */
+async function init() {
+  let sanity = null;
+  try {
+    const posts = await fetch('/api/blog-posts').then(r => r.json());
+    if (Array.isArray(posts) && posts.length > 0) {
+      sanity = {
+        gift:   posts.filter(p => p.category === 'Gift Guides'),
+        play:   posts.filter(p => p.category === 'Play Ideas'),
+        party:  posts.filter(p => p.category === 'Party Planning'),
+        news:   posts.filter(p => p.category === 'Playfuli News'),
+        recent: [...posts].sort((a,b) => new Date(b.publishedAt) - new Date(a.publishedAt)).slice(0,6),
+        all:    posts,
+      };
+    }
+  } catch { /* use fallback */ }
+
+  buildCards('giftRow',   sanity?.gift?.length   ? sanity.gift   : GIFT_GUIDES,   'Gift Guides');
+  buildCards('playRow',   sanity?.play?.length   ? sanity.play   : PLAY_IDEAS,    'Play Ideas');
+  buildCards('bdayRow',   sanity?.party?.length  ? sanity.party  : BDAY_PLANNING, 'Party Planning');
+  buildCards('newsRow',   sanity?.news?.length   ? sanity.news   : PLAYFULI_NEWS, 'Playfuli News');
+  buildCards('recentRow', sanity?.recent?.length ? sanity.recent : RECENT);
+
+  const trendingSource = sanity?.recent?.length ? sanity.recent : RECENT;
+  buildTrending(trendingSource);
+  buildNewTo(trendingSource);
+
+  initCarousel();
+  initSearch();
+}
+
+init();
+</script>
+</body>
+</html>
