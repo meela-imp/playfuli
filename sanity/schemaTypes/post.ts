@@ -76,6 +76,27 @@ export const post = defineType({
             defineField({ name: 'caption', type: 'string', title: 'Caption' }),
           ],
         },
+        {
+          type: 'object',
+          name: 'carouselBlock',
+          title: 'Product Carousel',
+          fields: [
+            defineField({
+              name: 'carousel',
+              title: 'Carousel',
+              type: 'reference',
+              to: [{ type: 'carousel' }],
+              validation: (r) => r.required(),
+            }),
+          ],
+          preview: {
+            select: { title: 'carousel.title' },
+            prepare: (value: Record<string, string>) => ({
+              title: value.title || 'Unnamed Carousel',
+              subtitle: 'Product Carousel 🛍️',
+            }),
+          },
+        },
       ],
     }),
   ],

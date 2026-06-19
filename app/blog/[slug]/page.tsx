@@ -4,6 +4,7 @@ import { PortableText } from 'next-sanity';
 import { client } from '../../../sanity/lib/client';
 import { postBySlugQuery, allPostsQuery } from '../../../sanity/lib/queries';
 import { urlFor } from '../../../sanity/lib/image';
+import CarouselBlock from '../../components/CarouselBlock';
 
 export const revalidate = 60;
 
@@ -50,7 +51,16 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       )}
 
       <div className="prose">
-        {post.body && <PortableText value={post.body as never} />}
+        {post.body && (
+          <PortableText
+            value={post.body as never}
+            components={{
+              types: {
+                carouselBlock: ({ value }) => <CarouselBlock value={value} />,
+              },
+            }}
+          />
+        )}
       </div>
     </main>
   );

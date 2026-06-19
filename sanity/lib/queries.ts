@@ -18,8 +18,23 @@ export const postBySlugQuery = groq`
     slug,
     publishedAt,
     excerpt,
+    category,
+    emoji,
     coverImage,
-    body
+    body[]{
+      ...,
+      _type == "carouselBlock" => {
+        ...,
+        "carousel": carousel->{
+          _id,
+          title,
+          "items": items[]{
+            name, price, link, badge,
+            "imageUrl": image.asset->url
+          }
+        }
+      }
+    }
   }
 `;
 
