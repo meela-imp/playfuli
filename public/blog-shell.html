@@ -411,7 +411,6 @@
           <div class="featured-slide">
             <div class="featured-image" style="background:var(--baby-blue)">
               <span class="fi-emoji">🦕</span>
-              <span class="fi-cat" style="color:var(--baby-blue-dark)">Gift Guides</span>
             </div>
             <div class="featured-body">
               <span class="featured-cat-pill" style="background:var(--baby-blue);color:var(--baby-blue-dark)">Gift Guides</span>
@@ -423,7 +422,6 @@
           <div class="featured-slide">
             <div class="featured-image" style="background:var(--dandelion)">
               <span class="fi-emoji">🎂</span>
-              <span class="fi-cat" style="color:var(--dandelion-dark)">Party Planning</span>
             </div>
             <div class="featured-body">
               <span class="featured-cat-pill" style="background:var(--dandelion);color:var(--dandelion-dark)">Party Planning</span>
@@ -435,7 +433,6 @@
           <div class="featured-slide">
             <div class="featured-image" style="background:var(--sage)">
               <span class="fi-emoji">🌿</span>
-              <span class="fi-cat" style="color:var(--sage-dark)">Play Ideas</span>
             </div>
             <div class="featured-body">
               <span class="featured-cat-pill" style="background:var(--sage);color:var(--sage-dark)">Play Ideas</span>
@@ -447,7 +444,6 @@
           <div class="featured-slide">
             <div class="featured-image" style="background:var(--rose)">
               <span class="fi-emoji">🎉</span>
-              <span class="fi-cat" style="color:var(--rose-dark)">Party Planning</span>
             </div>
             <div class="featured-body">
               <span class="featured-cat-pill" style="background:var(--rose);color:var(--rose-dark)">Party Planning</span>
@@ -459,7 +455,6 @@
           <div class="featured-slide">
             <div class="featured-image" style="background:var(--dandelion)">
               <span class="fi-emoji">🧲</span>
-              <span class="fi-cat" style="color:var(--dandelion-dark)">Gift Guides</span>
             </div>
             <div class="featured-body">
               <span class="featured-cat-pill" style="background:var(--dandelion);color:var(--dandelion-dark)">Gift Guides</span>
@@ -471,7 +466,6 @@
           <div class="featured-slide">
             <div class="featured-image" style="background:var(--periwinkle)">
               <span class="fi-emoji">🖍️</span>
-              <span class="fi-cat" style="color:#3a4a7a">Play Ideas</span>
             </div>
             <div class="featured-body">
               <span class="featured-cat-pill" style="background:var(--periwinkle);color:#3a4a7a">Play Ideas</span>
@@ -483,7 +477,6 @@
           <div class="featured-slide">
             <div class="featured-image" style="background:var(--baby-blue)">
               <span class="fi-emoji">🐾</span>
-              <span class="fi-cat" style="color:var(--baby-blue-dark)">Gift Guides</span>
             </div>
             <div class="featured-body">
               <span class="featured-cat-pill" style="background:var(--baby-blue);color:var(--baby-blue-dark)">Gift Guides</span>
@@ -924,7 +917,6 @@ function buildFeaturedCarousel(posts) {
           ${p.coverImageUrl
             ? `<img src="${p.coverImageUrl}" alt="${p.title}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">`
             : `<span class="fi-emoji">${p.emoji || '📝'}</span>`}
-          <span class="fi-cat" style="color:${style.color};position:relative;z-index:1">${cat}</span>
         </div>
         <div class="featured-body">
           <span class="featured-cat-pill" style="background:${style.bg};color:${style.color}">${cat}</span>
