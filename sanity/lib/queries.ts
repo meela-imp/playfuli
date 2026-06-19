@@ -63,6 +63,13 @@ export const relatedByCategoryQuery = groq`
   }
 `;
 
+export const postsForBrowseQuery = groq`
+  *[_type == "post"] | order(publishedAt desc) {
+    _id, title, "slug": slug.current, category, excerpt, emoji, publishedAt,
+    "tagNames": tags[]->name
+  }
+`;
+
 export const allAuthorsQuery = groq`
   *[_type == "author"] { _id, "slug": slug.current }
 `;
