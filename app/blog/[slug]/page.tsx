@@ -29,6 +29,8 @@ type BodyBlock = {
   [key: string]: unknown;
 };
 
+type Tag = { _id: string; name: string; slug: string };
+
 type Post = {
   _id: string;
   title: string;
@@ -37,7 +39,7 @@ type Post = {
   excerpt?: string;
   category?: string;
   emoji?: string;
-  tags?: string[];
+  tags?: Tag[];
   coverImage?: { asset: { _ref: string } };
   author?: { name: string; slug?: string; emoji?: string; photoUrl?: string; bio?: string };
   body?: BodyBlock[];
@@ -50,7 +52,7 @@ type RelatedPost = {
   category?: string;
   emoji?: string;
   excerpt?: string;
-  tags?: string[];
+  tags?: Tag[];
 };
 
 function extractHeadings(body?: BodyBlock[]): TocHeading[] {
@@ -63,10 +65,10 @@ function extractHeadings(body?: BodyBlock[]): TocHeading[] {
     });
 }
 
-function sortByTagOverlap(candidates: RelatedPost[], tags: string[]): RelatedPost[] {
+function sortByTagOverlap(candidates: RelatedPost[], tagIds: string[]): RelatedPost[] {
   return [...candidates].sort((a, b) => {
-    const aOverlap = (a.tags ?? []).filter(t => tags.includes(t)).length;
-    const bOverlap = (b.tags ?? []).filter(t => tags.includes(t)).length;
+    const aOverlap = (a.tags ?? []).filter(t => tagIds.includes(t._id)).length;
+    const bOverlap = (b.tags ?? []).filter(t => tagIds.includes(t._id)).length;
     return bOverlap - aOverlap;
   });
 }
@@ -84,14 +86,15 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   const headings = extractHeadings(post.body);
 
   // Related: tag overlap first, pad with same-category
+  const tagRefs = (post.tags ?? []).map(t => t._id);
   let related: RelatedPost[] = [];
-  if (post.tags?.length) {
+  if (tagRefs.length) {
     const candidates: RelatedPost[] = await client.fetch(relatedPostsQuery, {
       slug,
-      tags: post.tags,
+      tagRefs,
       category: post.category ?? '',
     });
-    related = sortByTagOverlap(candidates, post.tags).slice(0, 3);
+    related = sortByTagOverlap(candidates, tagRefs).slice(0, 3);
   }
   if (related.length < 3 && post.category) {
     const fallback: RelatedPost[] = await client.fetch(relatedByCategoryQuery, {
@@ -241,7 +244,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           )}
         </article>
 
-        <TocSidebar headings={headings} tags={post.tags} postUrl={postUrl} />
+        <TocSidebar headings={headings} tags={(post.tags ?? []).map(t => t.name)} postUrl={postUrl} />
       </div>
 
       {/* Author bio */}

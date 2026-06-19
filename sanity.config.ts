@@ -16,6 +16,7 @@ export default defineConfig({
           .items([
             S.documentTypeListItem('post').title('Blog Posts'),
             S.documentTypeListItem('author').title('Authors'),
+            S.documentTypeListItem('tag').title('Tags'),
             S.divider(),
             S.documentTypeListItem('carousel').title('Carousels'),
             S.documentTypeListItem('blogCuration').title('Blog Curation'),

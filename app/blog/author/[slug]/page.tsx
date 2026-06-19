@@ -31,6 +31,8 @@ type Author = {
   };
 };
 
+type Tag = { _id: string; name: string; slug: string };
+
 type Post = {
   _id: string;
   title: string;
@@ -39,7 +41,7 @@ type Post = {
   excerpt?: string;
   category?: string;
   emoji?: string;
-  tags?: string[];
+  tags?: Tag[];
 };
 
 export async function generateStaticParams() {
@@ -168,7 +170,7 @@ export default async function AuthorPage({ params }: { params: Promise<{ slug: s
                     {post.tags && post.tags.length > 0 && (
                       <div className="author-post-card-tags">
                         {post.tags.slice(0, 3).map(t => (
-                          <span key={t} className="author-post-card-tag">{t}</span>
+                          <span key={t._id} className="author-post-card-tag">{t.name}</span>
                         ))}
                       </div>
                     )}

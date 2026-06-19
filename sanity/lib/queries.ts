@@ -10,6 +10,8 @@ const POST_FIELDS = groq`
   _id, title, "slug": slug.current, category, excerpt, emoji, featured, publishedAt
 `;
 
+const TAG_FIELDS = groq`"tags": tags[]->{_id, name, "slug": slug.current}`;
+
 export const postBySlugQuery = groq`
   *[_type == "post" && slug.current == $slug][0] {
     _id,
@@ -19,8 +21,8 @@ export const postBySlugQuery = groq`
     excerpt,
     category,
     emoji,
-    tags,
     coverImage,
+    ${TAG_FIELDS},
     "author": author->{
       name,
       "slug": slug.current,
@@ -47,10 +49,10 @@ export const postBySlugQuery = groq`
 
 export const relatedPostsQuery = groq`
   *[_type == "post" && slug.current != $slug && (
-    count(tags[@ in $tags]) > 0 || category == $category
+    count(tags[]._ref in $tagRefs) > 0 || category == $category
   )] | order(publishedAt desc)[0..8] {
     ${POST_FIELDS},
-    tags
+    ${TAG_FIELDS}
   }
 `;
 
@@ -80,7 +82,8 @@ export const authorBySlugQuery = groq`
 
 export const postsByAuthorQuery = groq`
   *[_type == "post" && author->slug.current == $slug] | order(publishedAt desc) {
-    _id, title, "slug": slug.current, publishedAt, excerpt, category, emoji, tags
+    _id, title, "slug": slug.current, publishedAt, excerpt, category, emoji,
+    ${TAG_FIELDS}
   }
 `;
 

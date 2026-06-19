@@ -65,10 +65,9 @@ export const post = defineType({
     defineField({
       name: 'tags',
       title: 'Tags',
-      description: 'Used for "You might also like" recommendations e.g. "Ages 3–6", "Dinosaurs", "STEM toys"',
+      description: 'Pick from existing tags — used for "You might also like" recommendations',
       type: 'array',
-      of: [{ type: 'string' }],
-      options: { layout: 'tags' },
+      of: [{ type: 'reference', to: [{ type: 'tag' }] }],
     }),
     defineField({
       name: 'author',
