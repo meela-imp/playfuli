@@ -3,7 +3,8 @@ import { client } from '../../../sanity/lib/client';
 import { groq } from 'next-sanity';
 
 const POST_FIELDS = groq`
-  _id, title, "slug": slug.current, category, excerpt, emoji, featured, publishedAt
+  _id, title, "slug": slug.current, category, excerpt, emoji, featured, publishedAt,
+  "coverImageUrl": coverImage.asset->url + "?w=600&h=420&fit=crop&q=90&auto=format"
 `;
 
 const postsQuery = groq`

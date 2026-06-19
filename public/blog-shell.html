@@ -729,8 +729,11 @@ function buildCards(containerId, articles, defaultCat) {
     const card = document.createElement('a');
     card.className = 'article-card';
     card.href = href;
+    const cardThumb = a.coverImageUrl
+      ? `<img src="${a.coverImageUrl}" alt="${a.title}" style="width:100%;height:100%;object-fit:cover;display:block;">`
+      : `<span>${a.emoji || '📝'}</span>`;
     card.innerHTML = `
-      <div class="card-image" style="background:${colorVar}"><span>${a.emoji || '📝'}</span></div>
+      <div class="card-image" style="background:${colorVar}">${cardThumb}</div>
       <div class="card-body">
         <span class="card-pill" style="background:${style.bg};color:${style.color}">${catLabel}</span>
         <div class="card-title">${a.title}</div>
@@ -766,8 +769,11 @@ function buildNewTo(posts) {
     const href = p.slug ? `/blog/${typeof p.slug === 'object' ? p.slug.current : p.slug}` : '#';
     const cat = p.cat || p.category || '';
     const colorVar = p.color ? `var(--${p.color})` : `var(--${CAT_COLOR_VAR[cat] || 'baby-blue'})`;
+    const newToThumb = p.coverImageUrl
+      ? `<img src="${p.coverImageUrl}" alt="${p.title}" style="width:100%;height:100%;object-fit:cover;display:block;">`
+      : (p.emoji || '📝');
     return `<a href="${href}" class="new-to-article">
-      <div class="new-to-article-img" style="background:${colorVar}">${p.emoji || '📝'}</div>
+      <div class="new-to-article-img" style="background:${colorVar}">${newToThumb}</div>
       <div>
         <div class="new-to-article-cat">${cat}</div>
         <div class="new-to-article-title">${p.title}</div>
@@ -873,8 +879,10 @@ function buildFeaturedCarousel(posts) {
     return `
       <div class="featured-slide" onclick="window.location='${href}'" style="cursor:pointer">
         <div class="featured-image" style="background:${colorVar}">
-          <span class="fi-emoji">${p.emoji || '📝'}</span>
-          <span class="fi-cat" style="color:${style.color}">${cat}</span>
+          ${p.coverImageUrl
+            ? `<img src="${p.coverImageUrl}" alt="${p.title}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">`
+            : `<span class="fi-emoji">${p.emoji || '📝'}</span>`}
+          <span class="fi-cat" style="color:${style.color};position:relative;z-index:1">${cat}</span>
         </div>
         <div class="featured-body">
           <span class="featured-cat-pill" style="background:${style.bg};color:${style.color}">${cat}</span>
