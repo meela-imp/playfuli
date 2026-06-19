@@ -861,32 +861,64 @@ async function handleFooterSignup(e) {
   }
 }
 
+/* ═══ Build hero carousel from curated Sanity posts ═══ */
+function buildFeaturedCarousel(posts) {
+  const track = document.getElementById('featuredTrack');
+  if (!posts?.length || !track) return;
+  track.innerHTML = posts.map(p => {
+    const cat = p.category || '';
+    const style = CAT_STYLES[cat] || { bg: 'var(--baby-blue)', color: 'var(--baby-blue-dark)' };
+    const colorVar = `var(--${CAT_COLOR_VAR[cat] || 'baby-blue'})`;
+    const href = p.slug ? `/blog/${p.slug}` : '#';
+    return `
+      <div class="featured-slide" onclick="window.location='${href}'" style="cursor:pointer">
+        <div class="featured-image" style="background:${colorVar}">
+          <span class="fi-emoji">${p.emoji || '📝'}</span>
+          <span class="fi-cat" style="color:${style.color}">${cat}</span>
+        </div>
+        <div class="featured-body">
+          <span class="featured-cat-pill" style="background:${style.bg};color:${style.color}">${cat}</span>
+          <h2>${p.title}</h2>
+          <p>${p.excerpt || ''}</p>
+          <a href="${href}" class="featured-read">Read article →</a>
+        </div>
+      </div>`;
+  }).join('');
+}
+
 /* ═══ Load posts from Sanity, fall back to hardcoded ═══ */
 async function init() {
-  let sanity = null;
+  let posts = [];
+  let curation = {};
+
   try {
-    const posts = await fetch('/api/blog-posts').then(r => r.json());
-    if (Array.isArray(posts) && posts.length > 0) {
-      sanity = {
-        gift:   posts.filter(p => p.category === 'Gift Guides'),
-        play:   posts.filter(p => p.category === 'Play Ideas'),
-        party:  posts.filter(p => p.category === 'Party Planning'),
-        news:   posts.filter(p => p.category === 'Playfuli News'),
-        recent: [...posts].sort((a,b) => new Date(b.publishedAt) - new Date(a.publishedAt)).slice(0,6),
-        all:    posts,
-      };
-    }
+    const data = await fetch('/api/blog-posts').then(r => r.json());
+    posts = data.posts ?? [];
+    curation = data.curation ?? {};
   } catch { /* use fallback */ }
 
-  buildCards('giftRow',   sanity?.gift?.length   ? sanity.gift   : GIFT_GUIDES,   'Gift Guides');
-  buildCards('playRow',   sanity?.play?.length   ? sanity.play   : PLAY_IDEAS,    'Play Ideas');
-  buildCards('bdayRow',   sanity?.party?.length  ? sanity.party  : BDAY_PLANNING, 'Party Planning');
-  buildCards('newsRow',   sanity?.news?.length   ? sanity.news   : PLAYFULI_NEWS, 'Playfuli News');
-  buildCards('recentRow', sanity?.recent?.length ? sanity.recent : RECENT);
+  // Category rows: filtered by tag, sorted chronologically from API
+  const giftPosts  = posts.filter(p => p.category === 'Gift Guides');
+  const playPosts  = posts.filter(p => p.category === 'Play Ideas');
+  const partyPosts = posts.filter(p => p.category === 'Party Planning');
+  const newsPosts  = posts.filter(p => p.category === 'Playfuli News');
+  // Most Recent: strictly chronological, no curation
+  const recentPosts = posts.slice(0, 6);
 
-  const trendingSource = sanity?.recent?.length ? sanity.recent : RECENT;
-  buildTrending(trendingSource);
-  buildNewTo(trendingSource);
+  buildCards('giftRow',   giftPosts.length   ? giftPosts   : GIFT_GUIDES,   'Gift Guides');
+  buildCards('playRow',   playPosts.length   ? playPosts   : PLAY_IDEAS,    'Play Ideas');
+  buildCards('bdayRow',   partyPosts.length  ? partyPosts  : BDAY_PLANNING, 'Party Planning');
+  buildCards('newsRow',   newsPosts.length   ? newsPosts   : PLAYFULI_NEWS, 'Playfuli News');
+  buildCards('recentRow', recentPosts.length ? recentPosts : RECENT);
+
+  // Curated sections: Sanity curation doc → fall back to most recent → fall back to hardcoded
+  const trendFallback   = recentPosts.length ? recentPosts.slice(0, 5) : RECENT;
+  const startHereFallback = recentPosts.length ? recentPosts.slice(0, 4) : RECENT;
+  buildTrending(curation.trending?.length  ? curation.trending  : trendFallback);
+  buildNewTo(curation.startHere?.length    ? curation.startHere : startHereFallback);
+
+  // Hero carousel: Sanity curation doc replaces static slides; otherwise static HTML stays
+  if (curation.featured?.length) buildFeaturedCarousel(curation.featured);
 
   initCarousel();
   initSearch();
