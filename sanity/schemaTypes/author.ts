@@ -24,10 +24,5 @@ export const author = defineType({
   ],
   preview: {
     select: { title: 'name', subtitle: 'role', media: 'photo' },
-    prepare: (value: Record<string, string>) => ({
-      title: value.title,
-      subtitle: value.subtitle ?? 'Author',
-      media: value.media,
-    }),
   },
 });

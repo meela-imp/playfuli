@@ -178,10 +178,11 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         >
           {post.coverImage ? (
             <Image
-              src={urlFor(post.coverImage).width(400).height(280).fit('crop').url()}
+              src={urlFor(post.coverImage).width(800).height(560).fit('crop').quality(90).auto('format').url()}
               alt={post.title}
               width={400}
               height={280}
+              quality={90}
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           ) : (
@@ -224,10 +225,11 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
                     return (
                       <figure style={{ margin: '28px 0' }}>
                         <Image
-                          src={urlFor(value).width(720).url()}
+                          src={urlFor(value).width(1440).quality(90).auto('format').url()}
                           alt={value.alt ?? ''}
                           width={720}
                           height={400}
+                          quality={90}
                           style={{ borderRadius: 12, width: '100%', height: 'auto' }}
                         />
                         {value.caption && (

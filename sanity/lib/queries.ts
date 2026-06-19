@@ -27,7 +27,7 @@ export const postBySlugQuery = groq`
       name,
       "slug": slug.current,
       emoji,
-      "photoUrl": photo.asset->url,
+      "photoUrl": photo.asset->url + "?w=160&h=160&fit=crop&q=90&auto=format",
       bio
     },
     body[]{
@@ -39,7 +39,7 @@ export const postBySlugQuery = groq`
           title,
           "items": items[]{
             name, price, link, badge,
-            "imageUrl": image.asset->url
+            "imageUrl": image.asset->url + "?w=360&h=360&fit=crop&q=90&auto=format"
           }
         }
       }
@@ -74,7 +74,7 @@ export const authorBySlugQuery = groq`
     "slug": slug.current,
     role,
     emoji,
-    "photoUrl": photo.asset->url,
+    "photoUrl": photo.asset->url + "?w=240&h=240&fit=crop&q=90&auto=format",
     bio,
     social
   }
