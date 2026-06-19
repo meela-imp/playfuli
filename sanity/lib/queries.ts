@@ -10,7 +10,7 @@ const POST_FIELDS = groq`
   _id, title, "slug": slug.current, category, excerpt, emoji, featured, publishedAt
 `;
 
-const TAG_FIELDS = groq`"tags": tags[]->{_id, name, "slug": slug.current}`;
+const TAG_FIELDS = groq`"tags": tags[defined(@->)]->{_id, name, "slug": slug.current}`;
 
 export const postBySlugQuery = groq`
   *[_type == "post" && slug.current == $slug][0] {
@@ -66,7 +66,7 @@ export const relatedByCategoryQuery = groq`
 export const postsForBrowseQuery = groq`
   *[_type == "post"] | order(publishedAt desc) {
     _id, title, "slug": slug.current, category, excerpt, emoji, publishedAt,
-    "tagNames": tags[]->name
+    "tagNames": tags[defined(@->)]->name
   }
 `;
 

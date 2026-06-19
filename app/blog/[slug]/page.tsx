@@ -86,7 +86,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   const headings = extractHeadings(post.body);
 
   // Related: tag overlap first, pad with same-category
-  const tagRefs = (post.tags ?? []).map(t => t._id);
+  const tagRefs = (post.tags ?? []).filter(Boolean).map(t => t._id);
   let related: RelatedPost[] = [];
   if (tagRefs.length) {
     const candidates: RelatedPost[] = await client.fetch(relatedPostsQuery, {
