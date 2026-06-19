@@ -25,13 +25,13 @@
     body { font-family: 'Nunito', sans-serif; background: #fff; color: var(--soft-black); }
 
     /* ═══ Nav ═══ */
+    .nav-wrap { position: sticky; top: 0; z-index: 100; }
     nav {
       background: var(--teal);
       padding: 14px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      position: sticky; top: 0; z-index: 100;
     }
     nav .logo { display: flex; align-items: flex-end; gap: 0; text-decoration: none; }
     nav .nav-right { display: flex; align-items: center; gap: 12px; }
@@ -48,6 +48,35 @@
       color: rgba(255,255,255,0.7); text-decoration: none; transition: color 0.2s;
     }
     nav .nav-link-login:hover { color: #fff; }
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 6px 4px;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav-mobile-menu {
+      display: none; flex-direction: column; gap: 0;
+      background: var(--teal); padding: 8px 24px 20px;
+      border-top: 1px solid rgba(255,255,255,0.12);
+    }
+    .nav-mobile-menu.open { display: flex; }
+    .nav-mobile-link {
+      font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 700;
+      color: rgba(255,255,255,0.8); text-decoration: none; padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .nav-mobile-link:last-of-type { border-bottom: none; }
+    .nav-mobile-cta {
+      display: block; margin-top: 12px;
+      font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 800;
+      color: var(--teal); background: #fff; text-decoration: none;
+      padding: 13px 20px; border-radius: 10px; text-align: center;
+    }
 
     /* ═══ Blog hero ═══ */
     .blog-hero { padding: 52px 40px 56px; max-width: 1200px; margin: 0 auto; position: relative; overflow: hidden; }
@@ -68,7 +97,8 @@
     #page-confetti { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 0; overflow: hidden; }
     #page-confetti .pc { position: absolute; border-radius: 50%; opacity: 0.22; }
     #page-confetti .pc.sq { border-radius: 2px; }
-    nav, .blog-hero, .cat-section, .section-divider, .cta-banner, footer { position: relative; z-index: 1; }
+    .nav-wrap, .blog-hero, .cat-section, .section-divider, .cta-banner, footer { position: relative; z-index: 1; }
+    .nav-wrap { z-index: 100; }
 
     /* ═══ Search ═══ */
     .search-wrap { position: relative; width: 100%; z-index: 10; }
@@ -291,7 +321,8 @@
 
     /* ═══ Responsive ═══ */
     @media (max-width: 768px) {
-      nav .nav-btn-secondary { display: none; }
+      nav .nav-right { display: none; }
+      .nav-hamburger { display: flex; }
       .blog-hero { padding: 36px 20px 36px; }
       .blog-hero-grid { grid-template-columns: 1fr; }
       .play-favorites-logo { max-width: 320px; }
@@ -333,16 +364,26 @@
 </script>
 
 <!-- Nav -->
-<nav>
-  <a class="logo" href="/">
-    <img src="/playfuli-logo-white.svg" alt="Playfuli" style="display:block;height:28px">
-  </a>
-  <div class="nav-right">
-    <a href="/login" class="nav-link-login">Log in</a>
-    <a href="/#how-it-works" class="nav-btn nav-btn-secondary">How it works</a>
-    <a href="/dashboard" class="nav-btn nav-btn-primary">Create a profile</a>
+<div class="nav-wrap">
+  <nav>
+    <a class="logo" href="/">
+      <img src="/playfuli-logo-white.svg" alt="Playfuli" style="display:block;height:28px">
+    </a>
+    <div class="nav-right">
+      <a href="/login" class="nav-link-login">Log in</a>
+      <a href="/#how-it-works" class="nav-btn nav-btn-secondary">How it works</a>
+      <a href="/dashboard" class="nav-btn nav-btn-primary">Create a profile</a>
+    </div>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div class="nav-mobile-menu" id="nav-mobile-menu" aria-hidden="true">
+    <a href="/login" class="nav-mobile-link">Log in</a>
+    <a href="/#how-it-works" class="nav-mobile-link">How it works</a>
+    <a href="/dashboard" class="nav-mobile-cta">Create a profile →</a>
   </div>
-</nav>
+</div>
 
 <!-- Blog Hero -->
 <div class="blog-hero">
@@ -934,6 +975,29 @@ async function init() {
 }
 
 init();
+
+// Mobile nav toggle
+(function() {
+  const btn = document.getElementById('nav-hamburger');
+  const menu = document.getElementById('nav-mobile-menu');
+  if (!btn || !menu) return;
+  btn.addEventListener('click', function() {
+    const open = btn.classList.toggle('open');
+    menu.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    menu.setAttribute('aria-hidden', String(!open));
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  });
+  document.addEventListener('click', function(e) {
+    if (!btn.contains(e.target) && !menu.contains(e.target)) {
+      btn.classList.remove('open');
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      menu.setAttribute('aria-hidden', 'true');
+      btn.setAttribute('aria-label', 'Open menu');
+    }
+  });
+})();
 </script>
 </body>
 </html>

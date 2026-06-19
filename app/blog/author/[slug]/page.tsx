@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { client } from '../../../../sanity/lib/client';
+import NavBar from '../../../components/NavBar';
 import {
   allAuthorsQuery,
   authorBySlugQuery,
@@ -61,17 +62,7 @@ export default async function AuthorPage({ params }: { params: Promise<{ slug: s
 
   return (
     <>
-      {/* Nav */}
-      <nav>
-        <a className="logo" href="/">
-          <Image src="/playfuli-logo-white.svg" alt="Playfuli" width={100} height={28} style={{ display: 'block', height: 28, width: 'auto' }} />
-        </a>
-        <div className="nav-right">
-          <a href="/login" className="nav-link-login">Log in</a>
-          <a href="/#how-it-works" className="nav-btn nav-btn-secondary">How it works</a>
-          <a href="/dashboard" className="nav-btn nav-btn-primary">Create a profile</a>
-        </div>
-      </nav>
+      <NavBar />
 
       {/* Breadcrumb */}
       <div className="article-breadcrumb">

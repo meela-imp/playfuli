@@ -10,6 +10,7 @@ import {
 } from '../../../sanity/lib/queries';
 import { urlFor } from '../../../sanity/lib/image';
 import CarouselBlock from '../../components/CarouselBlock';
+import NavBar from '../../components/NavBar';
 import TocSidebar, { type TocHeading } from '../../components/TocSidebar';
 import { slugify } from '../../lib/slugify';
 
@@ -113,17 +114,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
   return (
     <>
-      {/* Nav */}
-      <nav>
-        <a className="logo" href="/">
-          <Image src="/playfuli-logo-white.svg" alt="Playfuli" width={100} height={28} style={{ display: 'block', height: 28, width: 'auto' }} />
-        </a>
-        <div className="nav-right">
-          <a href="/login" className="nav-link-login">Log in</a>
-          <a href="/#how-it-works" className="nav-btn nav-btn-secondary">How it works</a>
-          <a href="/dashboard" className="nav-btn nav-btn-primary">Create a profile</a>
-        </div>
-      </nav>
+      <NavBar />
 
       {/* Breadcrumb */}
       <div className="article-breadcrumb">

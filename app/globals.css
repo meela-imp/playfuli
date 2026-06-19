@@ -32,14 +32,12 @@ body {
 }
 
 /* ═══ Nav ═══ */
+.nav-wrap { position: sticky; top: 0; z-index: 200; }
 nav {
   background: var(--teal);
   padding: 0 24px;
   display: flex;
   align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 200;
   height: 56px;
   gap: 0;
 }
@@ -133,6 +131,32 @@ nav .nav-btn-primary { background: #fff; color: var(--teal); }
 nav .nav-btn-secondary { background: rgba(255,255,255,0.15); color: #fff; }
 nav .nav-link-login { font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.7); text-decoration: none; transition: color 0.2s; }
 nav .nav-link-login:hover { color: #fff; }
+.nav-hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 6px 4px; margin-left: auto;
+}
+.nav-hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; transition: transform 0.2s, opacity 0.2s; }
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.nav-mobile-menu {
+  display: none; flex-direction: column; gap: 0;
+  background: var(--teal); padding: 8px 24px 20px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+.nav-mobile-menu.open { display: flex; }
+.nav-mobile-link {
+  font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 700;
+  color: rgba(255,255,255,0.8); text-decoration: none; padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.nav-mobile-link:last-of-type { border-bottom: none; }
+.nav-mobile-cta {
+  display: block; margin-top: 12px;
+  font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 800;
+  color: var(--teal); background: #fff; text-decoration: none;
+  padding: 13px 20px; border-radius: 10px; text-align: center;
+}
 
 /* ═══ Hero ═══ */
 .hero { position: relative; background: var(--teal); padding: 72px 48px 88px; overflow: hidden; }
@@ -337,9 +361,9 @@ nav .nav-link-login:hover { color: #fff; }
 
 /* ═══ Responsive ═══ */
 @media (max-width: 768px) {
-  nav .nav-btn-secondary { display: none; }
-  nav .nav-link-login { font-size: 12px; }
-  nav .nav-btn { font-size: 12px; padding: 7px 14px; }
+  nav .nav-right { display: none; }
+  nav .nav-center { display: none; }
+  .nav-hamburger { display: flex; }
   .hero { padding: 48px 20px 60px; }
   .hero-inner { grid-template-columns: 1fr; gap: 36px; }
   .hero h1 { font-size: 36px; }
