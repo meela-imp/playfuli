@@ -63,6 +63,20 @@ export const post = defineType({
       options: { hotspot: true },
     }),
     defineField({
+      name: 'tags',
+      title: 'Tags',
+      description: 'Used for "You might also like" recommendations e.g. "Ages 3–6", "Dinosaurs", "STEM toys"',
+      type: 'array',
+      of: [{ type: 'string' }],
+      options: { layout: 'tags' },
+    }),
+    defineField({
+      name: 'author',
+      title: 'Author',
+      type: 'reference',
+      to: [{ type: 'author' }],
+    }),
+    defineField({
       name: 'body',
       title: 'Body',
       type: 'array',
@@ -75,6 +89,21 @@ export const post = defineType({
             defineField({ name: 'alt', type: 'string', title: 'Alt text' }),
             defineField({ name: 'caption', type: 'string', title: 'Caption' }),
           ],
+        },
+        {
+          type: 'object',
+          name: 'callout',
+          title: 'Callout / Tip box',
+          fields: [
+            defineField({ name: 'emoji', title: 'Emoji', type: 'string', description: 'e.g. 💡 or 🎁', initialValue: '💡' }),
+            defineField({ name: 'text', title: 'Text', type: 'text', rows: 2, validation: (r) => r.required() }),
+          ],
+          preview: {
+            select: { title: 'text', subtitle: 'emoji' },
+            prepare: ({ title, subtitle }: Record<string, string>) => ({
+              title: `${subtitle || '💡'} ${title || 'Callout'}`,
+            }),
+          },
         },
         {
           type: 'object',
