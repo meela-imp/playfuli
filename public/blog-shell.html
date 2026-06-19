@@ -55,8 +55,8 @@
     .blog-hero-left { display: flex; flex-direction: column; min-width: 0; }
     .blog-hero-right { display: flex; flex-direction: column; gap: 16px; }
     .page-eyebrow { font-size: 12px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--periwinkle); margin-bottom: 8px; }
-    .page-title { font-family: 'Fredoka', sans-serif; font-size: 52px; font-weight: 600; color: var(--teal); line-height: 1.1; margin-bottom: 10px; display: block; }
-    .title-i { display: inline-block; vertical-align: baseline; margin: 0 1px; flex-shrink: 0; }
+    .page-title { margin-bottom: 14px; line-height: 1; }
+    .play-favorites-logo { display: block; width: 100%; max-width: 480px; height: auto; }
     .page-sub { font-size: 16px; color: var(--mid-grey); font-weight: 600; max-width: 520px; }
 
     /* ═══ Header confetti ═══ */
@@ -293,7 +293,7 @@
       nav .nav-btn-secondary { display: none; }
       .blog-hero { padding: 36px 20px 36px; }
       .blog-hero-grid { grid-template-columns: 1fr; }
-      .page-title { font-size: 32px; }
+      .play-favorites-logo { max-width: 320px; }
       .cat-section, .section-divider { padding-left: 20px; padding-right: 20px; }
       .featured-slide { flex-direction: column; min-height: auto; }
       .featured-image { width: 100%; min-height: 160px; }
@@ -360,7 +360,7 @@
   <div class="blog-hero-grid">
     <div class="blog-hero-left">
       <div class="page-eyebrow">Playfuli Blog</div>
-      <h1 class="page-title">Play Favor<svg class="title-i" width="16" height="46" viewBox="0 0 14 74" aria-hidden="true"><defs><clipPath id="tc"><rect x="1" y="16" width="12" height="58" rx="6"/></clipPath></defs><rect x="1" y="16" width="12" height="15" fill="#3A7D9A" clip-path="url(#tc)"/><rect x="1" y="31" width="12" height="14" fill="#8BBDD0" clip-path="url(#tc)"/><rect x="1" y="45" width="12" height="15" fill="#3A7D9A" clip-path="url(#tc)"/><rect x="1" y="60" width="12" height="14" fill="#8BBDD0" clip-path="url(#tc)"/><ellipse cx="7" cy="6" rx="4" ry="5" fill="#F2D888"/></svg>tes</h1>
+      <h1 class="page-title"><img src="/play-favorites.svg" alt="Play Favorites" class="play-favorites-logo" /></h1>
       <p class="page-sub">A collection of articles and creative inspiration curated to simplify how you shop, play, and celebrate the unique kid in your life.</p>
 
       <!-- Featured Carousel -->
