@@ -3,7 +3,7 @@ export default function HowItWorks() {
     <div className="how-it-works" id="how-it-works">
       <div className="section-label">How it works</div>
       <h2 className="section-title">Three steps to better birthday gifts</h2>
-      <p className="section-desc" style={{ whiteSpace: 'nowrap' }}>No registry. No guessing. Just a simple way to make sure every gift is a hit.</p>
+      <p className="section-desc">No registry. No guessing. Just a simple way to make sure every gift is a hit.</p>
       <div className="steps">
         <div className="step">
           <div className="step-number" style={{ background: 'var(--baby-blue)', color: 'var(--baby-blue-dark)' }}>1</div>

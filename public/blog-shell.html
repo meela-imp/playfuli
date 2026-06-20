@@ -61,21 +61,46 @@
     .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
     .nav-mobile-menu {
       display: none; flex-direction: column; gap: 0;
-      background: var(--teal); padding: 8px 24px 20px;
+      background: var(--teal); padding: 8px 24px 24px;
       border-top: 1px solid rgba(255,255,255,0.12);
     }
     .nav-mobile-menu.open { display: flex; }
-    .nav-mobile-link {
+    .nav-mobile-section-toggle {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; background: none; border: none; border-bottom: 1px solid rgba(255,255,255,0.1);
       font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 700;
-      color: rgba(255,255,255,0.8); text-decoration: none; padding: 14px 0;
+      color: rgba(255,255,255,0.9); padding: 15px 0; cursor: pointer; text-align: left;
+    }
+    .nav-mobile-chevron {
+      font-size: 16px; color: rgba(255,255,255,0.5);
+      transition: transform 0.2s; display: inline-block;
+    }
+    .nav-mobile-section-toggle.open .nav-mobile-chevron { transform: rotate(90deg); }
+    .nav-mobile-section-body {
+      display: flex; flex-direction: column; padding: 8px 0 4px 12px;
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
-    .nav-mobile-link:last-of-type { border-bottom: none; }
+    .nav-mobile-feature-link {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 800;
+      color: #fff; text-decoration: none; padding: 10px 0 8px;
+    }
+    .nav-mobile-feature-icon { font-size: 18px; }
+    .nav-mobile-sub-link {
+      font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 600;
+      color: rgba(255,255,255,0.7); text-decoration: none; padding: 8px 0; display: block;
+    }
+    .nav-mobile-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 6px 0; }
+    .nav-mobile-cta-group { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
     .nav-mobile-cta {
-      display: block; margin-top: 12px;
+      display: block;
       font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 800;
       color: var(--teal); background: #fff; text-decoration: none;
       padding: 13px 20px; border-radius: 10px; text-align: center;
+    }
+    .nav-mobile-link-small {
+      font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700;
+      color: rgba(255,255,255,0.6); text-decoration: none; text-align: center;
     }
 
     /* ═══ Blog hero ═══ */
@@ -379,9 +404,37 @@
     </button>
   </nav>
   <div class="nav-mobile-menu" id="nav-mobile-menu" aria-hidden="true">
-    <a href="/login" class="nav-mobile-link">Log in</a>
-    <a href="/#how-it-works" class="nav-mobile-link">How it works</a>
-    <a href="/dashboard" class="nav-mobile-cta">Create a profile →</a>
+    <!-- How it works accordion -->
+    <button class="nav-mobile-section-toggle" id="nm-how-toggle" aria-expanded="false">
+      How it works <span class="nav-mobile-chevron">›</span>
+    </button>
+    <div class="nav-mobile-section-body" id="nm-how-body" style="display:none">
+      <a href="/app" class="nav-mobile-feature-link">
+        <span class="nav-mobile-feature-icon">🎁</span><span>Create a Play Profile</span>
+      </a>
+      <a href="/app" class="nav-mobile-sub-link">For Parents</a>
+      <a href="/gift-givers" class="nav-mobile-sub-link">For Gift Givers</a>
+      <a href="/plus" class="nav-mobile-sub-link">Playfuli Plus</a>
+      <div class="nav-mobile-divider"></div>
+      <a href="/about" class="nav-mobile-sub-link">About</a>
+      <a href="/reviews" class="nav-mobile-sub-link">Reviews</a>
+    </div>
+    <!-- Discover accordion -->
+    <button class="nav-mobile-section-toggle" id="nm-disc-toggle" aria-expanded="false">
+      Discover <span class="nav-mobile-chevron">›</span>
+    </button>
+    <div class="nav-mobile-section-body" id="nm-disc-body" style="display:none">
+      <a href="/blog" class="nav-mobile-feature-link">
+        <span class="nav-mobile-feature-icon">🎈</span><span>Play Favorites Blog</span>
+      </a>
+      <a href="/blog/category?cat=Gift+Guides" class="nav-mobile-sub-link">🎁 Gift Guides</a>
+      <a href="/blog/category?cat=Play+Ideas" class="nav-mobile-sub-link">🌿 Play Ideas</a>
+      <a href="/blog/category?cat=Party+Planning" class="nav-mobile-sub-link">🎂 Party Planning</a>
+    </div>
+    <div class="nav-mobile-cta-group">
+      <a href="/app" class="nav-mobile-cta">Create a profile →</a>
+      <a href="/login" class="nav-mobile-link-small">Log in</a>
+    </div>
   </div>
 </div>
 
@@ -968,11 +1021,12 @@ async function init() {
 
 init();
 
-// Mobile nav toggle
+// Mobile nav toggle + accordions
 (function() {
   const btn = document.getElementById('nav-hamburger');
   const menu = document.getElementById('nav-mobile-menu');
   if (!btn || !menu) return;
+
   btn.addEventListener('click', function() {
     const open = btn.classList.toggle('open');
     menu.classList.toggle('open', open);
@@ -980,6 +1034,20 @@ init();
     menu.setAttribute('aria-hidden', String(!open));
     btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
   });
+
+  // Accordion sections
+  [['nm-how-toggle','nm-how-body'], ['nm-disc-toggle','nm-disc-body']].forEach(function([tid, bid]) {
+    const toggle = document.getElementById(tid);
+    const body = document.getElementById(bid);
+    if (!toggle || !body) return;
+    toggle.addEventListener('click', function() {
+      const open = body.style.display === 'none';
+      body.style.display = open ? 'flex' : 'none';
+      toggle.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+  });
+
   document.addEventListener('click', function(e) {
     if (!btn.contains(e.target) && !menu.contains(e.target)) {
       btn.classList.remove('open');

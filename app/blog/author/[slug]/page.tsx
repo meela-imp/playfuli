@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { client } from '../../../../sanity/lib/client';
-import NavBar from '../../../components/NavBar';
+import Nav from '../../../../components/Nav';
 import {
   allAuthorsQuery,
   authorBySlugQuery,
@@ -62,7 +62,7 @@ export default async function AuthorPage({ params }: { params: Promise<{ slug: s
 
   return (
     <>
-      <NavBar />
+      <Nav />
 
       {/* Breadcrumb */}
       <div className="article-breadcrumb">

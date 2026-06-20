@@ -151,12 +151,45 @@ nav .nav-link-login:hover { color: #fff; }
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 .nav-mobile-link:last-of-type { border-bottom: none; }
+.nav-mobile-section-toggle {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; background: none; border: none; border-bottom: 1px solid rgba(255,255,255,0.1);
+  font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 700;
+  color: rgba(255,255,255,0.9); padding: 15px 0; cursor: pointer; text-align: left;
+}
+.nav-mobile-chevron {
+  font-size: 16px; color: rgba(255,255,255,0.5);
+  transition: transform 0.2s; display: inline-block;
+}
+.nav-mobile-section-toggle.open .nav-mobile-chevron { transform: rotate(90deg); }
+.nav-mobile-section-body {
+  display: flex; flex-direction: column; padding: 8px 0 4px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.nav-mobile-feature-link {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 800;
+  color: #fff; text-decoration: none; padding: 10px 0 8px;
+}
+.nav-mobile-feature-icon { font-size: 18px; }
+.nav-mobile-sub-link {
+  font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 600;
+  color: rgba(255,255,255,0.7); text-decoration: none; padding: 8px 0;
+}
+.nav-mobile-sub-link:hover { color: #fff; }
+.nav-mobile-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 6px 0; }
+.nav-mobile-cta-group { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
 .nav-mobile-cta {
-  display: block; margin-top: 12px;
+  display: block;
   font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 800;
   color: var(--teal); background: #fff; text-decoration: none;
   padding: 13px 20px; border-radius: 10px; text-align: center;
 }
+.nav-mobile-link-small {
+  font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700;
+  color: rgba(255,255,255,0.6); text-decoration: none; text-align: center; padding-bottom: 4px;
+}
+.nav-mobile-link-small:hover { color: #fff; }
 
 /* ═══ Hero ═══ */
 .hero { position: relative; background: var(--teal); padding: 72px 48px 88px; overflow: hidden; }

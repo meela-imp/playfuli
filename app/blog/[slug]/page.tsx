@@ -10,7 +10,7 @@ import {
 } from '../../../sanity/lib/queries';
 import { urlFor } from '../../../sanity/lib/image';
 import CarouselBlock from '../../components/CarouselBlock';
-import NavBar from '../../components/NavBar';
+import Nav from '../../../components/Nav';
 import TocSidebar, { type TocHeading } from '../../components/TocSidebar';
 import { slugify } from '../../lib/slugify';
 
@@ -114,7 +114,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
   return (
     <>
-      <NavBar />
+      <Nav />
 
       {/* Breadcrumb */}
       <div className="article-breadcrumb">
