@@ -44,9 +44,9 @@ export default function Footer() {
         <div className="footer-col">
           <h4>Parents &amp; Kids</h4>
           <ul>
-            <li><a href="/blog/gift-guides">Gift Guides</a></li>
-            <li><a href="/blog/play-ideas">Play Ideas</a></li>
-            <li><a href="/blog/party-planning">Birthday Planning</a></li>
+            <li><a href="/blog#gift-guides">Gift Guides</a></li>
+            <li><a href="/blog#play-ideas">Play Ideas</a></li>
+            <li><a href="/blog#party-planning">Birthday Planning</a></li>
             <li><a href="/faq">FAQs</a></li>
           </ul>
         </div>

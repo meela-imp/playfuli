@@ -5,7 +5,6 @@ import ValueProps from '@/components/ValueProps';
 import ForWho from '@/components/ForWho';
 import SocialProof from '@/components/SocialProof';
 import FinalCta from '@/components/FinalCta';
-import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
@@ -19,7 +18,6 @@ export default function Home() {
         <SocialProof />
         <FinalCta />
       </main>
-      <Footer />
     </>
   );
 }

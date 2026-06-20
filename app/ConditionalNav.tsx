@@ -2,12 +2,25 @@
 
 import { usePathname } from 'next/navigation';
 import Nav from '@/components/Nav';
+import Footer from '@/components/Footer';
 
-// Routes that provide their own nav or should not show the marketing nav
+// Routes that provide their own nav/footer or should not show the marketing shell
 const EXCLUDED = ['/dashboard', '/studio', '/auth'];
 
-export default function ConditionalNav() {
+function useExcluded() {
   const pathname = usePathname();
-  if (EXCLUDED.some(prefix => pathname.startsWith(prefix))) return null;
+  return EXCLUDED.some(prefix => pathname.startsWith(prefix));
+}
+
+export function ConditionalNav() {
+  if (useExcluded()) return null;
   return <Nav />;
 }
+
+export function ConditionalFooter() {
+  if (useExcluded()) return null;
+  return <Footer />;
+}
+
+// Keep default export for backward compat
+export default ConditionalNav;

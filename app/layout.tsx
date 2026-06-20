@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Fredoka, Nunito } from "next/font/google";
 import "./globals.css";
-import ConditionalNav from "./ConditionalNav";
+import { ConditionalNav, ConditionalFooter } from "./ConditionalNav";
 
 const fredoka = Fredoka({
   weight: ["400", "500", "600"],
@@ -57,6 +57,7 @@ export default function RootLayout({
       <body>
         <ConditionalNav />
         {children}
+        <ConditionalFooter />
       </body>
     </html>
   );
