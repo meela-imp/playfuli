@@ -110,15 +110,15 @@ export default function Nav() {
             <div className="mega-cols" style={{ gap: 0, paddingRight: 0, paddingTop: 0, paddingBottom: 0 }}>
               <div className="mega-features-section" style={{ paddingLeft: 0, borderRight: '1px solid rgba(8,75,109,0.07)', paddingRight: 28, marginRight: 0, flex: 1 }}>
                 <div className="mega-col-head">Parents &amp; Kids</div>
-                <a href="/blog/gift-guides" className="mega-offer">
+                <a href="/blog#gift-guides" className="mega-offer">
                   <div className="mega-offer-title">Gift guides</div>
                   <div className="mega-offer-desc">Curated picks for every kid, interest, and budget — so you never show up with the wrong thing.</div>
                 </a>
-                <a href="/blog/play-ideas" className="mega-offer">
+                <a href="/blog#play-ideas" className="mega-offer">
                   <div className="mega-offer-title">Play ideas</div>
                   <div className="mega-offer-desc">Activities, setups, and creative inspiration for the way your kid actually plays.</div>
                 </a>
-                <a href="/blog/party-planning" className="mega-offer">
+                <a href="/blog#party-planning" className="mega-offer">
                   <div className="mega-offer-title">Party planning</div>
                   <div className="mega-offer-desc">From themes to timelines, everything you need to throw a party they&apos;ll never forget.</div>
                 </a>
@@ -197,9 +197,9 @@ export default function Nav() {
               <span className="nav-mobile-feature-icon">🎈</span>
               <span>Play Favorites Blog</span>
             </a>
-            <a href="/blog/category?cat=Gift+Guides" className="nav-mobile-sub-link">🎁 Gift Guides</a>
-            <a href="/blog/category?cat=Play+Ideas" className="nav-mobile-sub-link">🌿 Play Ideas</a>
-            <a href="/blog/category?cat=Party+Planning" className="nav-mobile-sub-link">🎂 Party Planning</a>
+            <a href="/blog#gift-guides" className="nav-mobile-sub-link">🎁 Gift Guides</a>
+            <a href="/blog#play-ideas" className="nav-mobile-sub-link">🌿 Play Ideas</a>
+            <a href="/blog#party-planning" className="nav-mobile-sub-link">🎂 Party Planning</a>
           </div>
         )}
 
